@@ -7,11 +7,6 @@ const NavBar = () => {
     useState(false);
   const [categoryDropdown, setCategoryDropDown] = useState(false);
 
-  const handleCategoryDropdownVisible = () => {
-    setCategoryDropdownVisible(true);
-    categoryDropdown(true);
-  };
-
   return (
     <React.Fragment>
       <div className="bg-dark text-white text-right pr-3 py-1 d-none d-md-block">
