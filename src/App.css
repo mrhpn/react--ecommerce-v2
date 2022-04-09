@@ -67,7 +67,7 @@ body {
 
 .card__product:hover .btn__add-to-cart {
   transition: all 0.3s linear;
-  background-color: #ffa7b0;
+  background-color: #ff359052;
   animation: animate-btn__add-to-cart 0.3s;
 }
 
@@ -90,11 +90,7 @@ body {
 
 .btn__add-to-cart {
   background-color: #d3d3d36c;
-  border-radius: 15px;
-}
-
-.btn__add-to-cart:hover {
-  background-color: blanchedalmond;
+  border-radius: 150px !important;
 }
 
 .link-blue:hover {
