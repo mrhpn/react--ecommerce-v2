@@ -61,8 +61,15 @@ body {
   margin: auto;
 }
 
+.card-img-top {
+  width: 100%;
+  height: 30vh;
+  object-fit: contain;
+}
+
 .card__product {
   width: 11rem;
+  border: 1px solid red;
 }
 
 .card__product:hover .btn__add-to-cart {

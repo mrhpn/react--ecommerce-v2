@@ -57,7 +57,7 @@ const NavBar = () => {
             <ul className="nav navbar-nav mr-auto mt-2 mt-lg-0">
               <li className="nav-item active">
                 <a className="nav-link font-weight-bold" href="#">
-                  ပင်မစာမျက်နှာ <span className="sr-only">(current)</span>
+                  Home <span className="sr-only">(current)</span>
                 </a>
               </li>
               <li className="nav-item">
@@ -67,7 +67,7 @@ const NavBar = () => {
                   className="nav-link font-weight-bold position-relative link_kinds"
                   id="link_kinds"
                   href="#">
-                  အမျိုးအစားများ
+                  Categories
                 </a>
                 <div
                   id="list_group_kinds"
@@ -82,7 +82,7 @@ const NavBar = () => {
                     {categories.map((category) => {
                       return (
                         <li
-                          key={category._id}
+                          key={category.name}
                           className="list-group-item list-group-item-action">
                           {category.name}
                         </li>
