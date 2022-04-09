@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { commerce } from '../lib/commerce';
+import Skeleton from '@mui/material/Skeleton';
+import LoadingProducts from '../components/loadingProducts';
 import Carousel from '../components/carousel';
 import Footer from '../components/footer';
 import Products from '../components/products';
+import Loading from '../components/loadingProducts';
 
 const curryProducts = [
   {
@@ -96,15 +99,18 @@ const Home = () => {
         {/* Snacks */}
         <div className="mt-5 mb-5">
           <div className="d-flex justify-content-between">
-            <h4 className="font-weight-bold mr-auto title__category-size">
+            <h4 className="position-relative d-inline font-weight-bold mr-auto title__category-size">
               Snacks
             </h4>
             <span>
               <a href="#">အားလုံးကြည့်မယ်</a>
             </span>
           </div>
-
-          <Products items={snacks} />
+          {snacks.length === 0 ? (
+            <LoadingProducts />
+          ) : (
+            <Products items={snacks} />
+          )}
         </div>
 
         {/* Juice */}
@@ -117,8 +123,11 @@ const Home = () => {
               <a href="#">အားလုံးကြည့်မယ်</a>
             </span>
           </div>
-
-          <Products items={juices} />
+          {juices.length === 0 ? (
+            <LoadingProducts />
+          ) : (
+            <Products items={juices} />
+          )}
         </div>
 
         {/* Fish and Seafood */}
@@ -131,8 +140,11 @@ const Home = () => {
               <a href="#">အားလုံးကြည့်မယ်</a>
             </span>
           </div>
-
-          <Products items={fishAndSeafood} />
+          {fishAndSeafood.length === 0 ? (
+            <LoadingProducts />
+          ) : (
+            <Products items={fishAndSeafood} />
+          )}
         </div>
       </div>
       <Footer />

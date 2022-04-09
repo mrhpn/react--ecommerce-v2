@@ -10,8 +10,9 @@ const NavBar = () => {
   const [categories, setCategories] = useState([]);
 
   const getCategories = async () => {
-    const { data } = await commerce.categories.list();
-    setCategories(data);
+    const a = await commerce.categories.list();
+    console.log(a);
+    setCategories(a.data);
   };
 
   useEffect(() => {
