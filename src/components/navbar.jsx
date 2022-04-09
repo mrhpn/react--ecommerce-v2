@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { commerce } from '../lib/commerce';
 import logo from '../assets/icons/logo.svg';
 import shoppingCart from '../assets/icons/shopping-cart.svg';
 
@@ -6,6 +7,16 @@ const NavBar = () => {
   const [isCategoryDropdownVisible, setCategoryDropdownVisible] =
     useState(false);
   const [categoryDropdown, setCategoryDropDown] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  const getCategories = async () => {
+    const { data } = await commerce.categories.list();
+    setCategories(data);
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   return (
     <React.Fragment>
@@ -68,27 +79,15 @@ const NavBar = () => {
                       : 'd-none'
                   }`}>
                   <ul className="list-group list-group-flush position-absolute shadow-lg">
-                    <li className="list-group-item list-group-item-action">
-                      ကုန်စုံနှင့်ကုန်ခြောက်
-                    </li>
-                    <li className="list-group-item list-group-item-action">
-                      မနက်စာနှင့်နို့ထွက်ပစ္စည်း
-                    </li>
-                    <li className="list-group-item list-group-item-action">
-                      ဟင်းသီးဟင်းရွက်နှင့်အသီးအနှံ
-                    </li>
-                    <li className="list-group-item list-group-item-action">
-                      အသား၊ငါးနှင့်ပင်လယ်စာ
-                    </li>
-                    <li className="list-group-item list-group-item-action">
-                      အချိုရည်နှင့်မုန့်မျိုးစုံ
-                    </li>
-                    <li className="list-group-item list-group-item-action">
-                      အသင့်စားသုံးနိုင်သောအစားအစာများ
-                    </li>
-                    <li className="list-group-item list-group-item-action">
-                      ဘီယာနှင့်ဝိုင်အမျိုးမျိုး
-                    </li>
+                    {categories.map((category) => {
+                      return (
+                        <li
+                          key={category._id}
+                          className="list-group-item list-group-item-action">
+                          {category.name}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               </li>

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chec/commerce.js": "^2.8.0",
     "bootstrap": "^4.1.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
