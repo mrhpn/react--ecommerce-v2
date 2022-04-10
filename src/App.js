@@ -29,10 +29,15 @@ const App = () => {
     setFishAndSeafood(data);
   };
 
-  const handleAddToCart = async (productId, quantity) =>
-    setShoppingCart(await cart.add(productId, quantity));
+  const handleAddToCart = async (productId, quantity) => {
+    const item = await cart.add(productId, quantity);
+    setShoppingCart(item.cart);
+  };
 
-  const fetchCart = async () => setShoppingCart(await cart.reteive());
+  const fetchCart = async () => {
+    const data = await cart.reteive();
+    setShoppingCart(data);
+  };
 
   useEffect(() => {
     getSancks();

@@ -10,7 +10,7 @@ const Cart = ({ cart }) => {
   const CartProducts = () => {
     if (cart.line_items && cart.line_items.length > 0)
       return (
-        <div className="row text-center">
+        <div className="row text-center mb-5">
           {cart.line_items.map((item) => (
             <CartItem item={item} />
           ))}
