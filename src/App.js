@@ -7,6 +7,7 @@ import './App.css';
 import Cart from './pages/cart';
 import Home from './pages/home';
 import Categories from './pages/categories';
+import Checkout from './pages/checkout';
 
 const App = () => {
   const [snacks, setSnacks] = useState([]);
@@ -80,6 +81,7 @@ const App = () => {
             />
           }
         />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/categories" element={<Categories />} />
         <Route
           path="/"
