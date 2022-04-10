@@ -81,7 +81,7 @@ const App = () => {
             />
           }
         />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout" element={<Checkout cart={shoppingCart} />} />
         <Route path="/categories" element={<Categories />} />
         <Route
           path="/"

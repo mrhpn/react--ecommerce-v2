@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import LoadingProducts from '../components/loadingProducts';
 import CartItem from '../components/cartItem';
 
@@ -20,7 +21,9 @@ const Cart = ({ cart, cartActions, cartItemActions }) => {
                 className="btn btn-danger mr-2">
                 Empty Cart
               </button>
-              <button className="btn btn-primary">Checkout</button>
+              <Link to="/checkout">
+                <button className="btn btn-primary">Checkout</button>
+              </Link>
             </div>
           </div>
           <div className="row text-center mb-5">
