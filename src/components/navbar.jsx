@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { commerce } from '../lib/commerce';
+import { Link, NavLink } from 'react-router-dom';
 import logo from '../assets/icons/logo.svg';
 import shoppingCart from '../assets/icons/shopping-cart.svg';
 
@@ -57,20 +58,19 @@ const NavBar = ({ totalItems }) => {
 
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="nav navbar-nav mr-auto mt-2 mt-lg-0">
-              <li className="nav-item active">
-                <a className="nav-link font-weight-bold" href="#">
-                  Home <span className="sr-only">(current)</span>
-                </a>
+              <li className="nav-item">
+                <NavLink to="/" className="nav-link">
+                  Home
+                </NavLink>
               </li>
               <li className="nav-item">
-                <a
+                <NavLink
+                  to="/categories"
                   onMouseEnter={() => setCategoryDropdownVisible(true)}
                   onMouseLeave={() => setCategoryDropdownVisible(false)}
-                  className="nav-link font-weight-bold position-relative link_kinds"
-                  id="link_kinds"
-                  href="#">
+                  className="nav-link position-relative">
                   Categories
-                </a>
+                </NavLink>
                 <div
                   id="list_group_kinds"
                   onMouseEnter={() => setCategoryDropdownVisible(true)}
@@ -106,12 +106,14 @@ const NavBar = ({ totalItems }) => {
                 </button>
               </form>
             </ul>
-            <button className="btn bg-transparent position-relative">
-              <img src={shoppingCart} alt="..." />
-              <span className="badge badge-pill badge-danger mr-4 position-absolute">
-                {totalItems}
-              </span>
-            </button>
+            <Link to="/cart">
+              <button className="btn bg-transparent position-relative">
+                <img src={shoppingCart} alt="..." />
+                <span className="badge badge-pill badge-danger mr-4 position-absolute">
+                  {totalItems}
+                </span>
+              </button>
+            </Link>
           </div>
         </div>
       </nav>

@@ -6,6 +6,7 @@ import cart from './services/cart';
 import './App.css';
 import Cart from './pages/cart';
 import Home from './pages/home';
+import Categories from './pages/categories';
 
 const App = () => {
   const [snacks, setSnacks] = useState([]);
@@ -46,10 +47,16 @@ const App = () => {
     <div className="App">
       <NavBar totalItems={shoppingCart.total_items} />
 
-      <Cart cart={shoppingCart} />
-
-      {/* Home */}
-      <Home products={productsToPresent} onAddToCart={handleAddToCart} />
+      <Routes>
+        <Route path="/cart" element={<Cart cart={shoppingCart} />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route
+          path="/"
+          element={
+            <Home products={productsToPresent} onAddToCart={handleAddToCart} />
+          }
+        />
+      </Routes>
     </div>
   );
 };

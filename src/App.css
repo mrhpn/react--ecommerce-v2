@@ -9,6 +9,10 @@ body {
   font-family: system_font;
 }
 
+.active {
+  font-weight: bold;
+}
+
 .bg-glass {
   width: 100%;
   background: inherit;
