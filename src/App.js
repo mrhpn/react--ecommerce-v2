@@ -35,9 +35,13 @@ const App = () => {
   };
 
   const handleUpdateQuantity = async (productId, quantity) => {
-    console.log(quantity);
     const updatedCart = await cart.update(productId, quantity);
     setShoppingCart(updatedCart.cart);
+  };
+
+  const handleRemoveCartItem = async (productId) => {
+    const removed = await cart.remove(productId);
+    setShoppingCart(removed.cart);
   };
 
   const fetchCart = async () => {
@@ -54,7 +58,7 @@ const App = () => {
 
   const productsToPresent = { snacks, juices, fishAndSeafood };
   const cartActions = {};
-  const cartItemActions = { handleUpdateQuantity };
+  const cartItemActions = { handleUpdateQuantity, handleRemoveCartItem };
 
   return (
     <div className="App">

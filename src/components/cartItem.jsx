@@ -1,7 +1,7 @@
 import React from 'react';
 
 const CartItem = ({ item, cartItemActions }) => {
-  const { handleUpdateQuantity } = cartItemActions;
+  const { handleUpdateQuantity, handleRemoveCartItem } = cartItemActions;
 
   return (
     <div className="col-6 col-sm-4 col-md-2">
@@ -26,7 +26,11 @@ const CartItem = ({ item, cartItemActions }) => {
                 +
               </button>
             </div>
-            <button className="badge badge-danger border-0">remove</button>
+            <button
+              onClick={() => handleRemoveCartItem(item.id)}
+              className="badge badge-danger border-0">
+              remove
+            </button>
           </div>
         </div>
       </div>

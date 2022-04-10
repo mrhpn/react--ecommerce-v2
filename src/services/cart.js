@@ -15,6 +15,11 @@ const update = async (productId, quantity) => {
   return updatedCart;
 };
 
-const cart = { add, reteive, update };
+const remove = async (productId) => {
+  const removed = await commerce.cart.remove(productId);
+  return removed;
+};
+
+const cart = { add, reteive, update, remove };
 
 export default cart;
