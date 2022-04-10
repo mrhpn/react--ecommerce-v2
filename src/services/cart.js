@@ -20,6 +20,11 @@ const remove = async (productId) => {
   return removed;
 };
 
-const cart = { add, reteive, update, remove };
+const empty = async () => {
+  const emptied = await commerce.cart.empty();
+  return emptied;
+};
+
+const cart = { add, reteive, update, remove, empty };
 
 export default cart;

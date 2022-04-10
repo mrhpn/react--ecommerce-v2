@@ -2,7 +2,8 @@ import React from 'react';
 import LoadingProducts from '../components/loadingProducts';
 import CartItem from '../components/cartItem';
 
-const Cart = ({ cart, cartItemActions }) => {
+const Cart = ({ cart, cartActions, cartItemActions }) => {
+  const { handleEmptyCart } = cartActions;
   const isCartEmpty = cart.total_items === 0;
 
   const EmptyCart = () => <span>Empty cart. Keep Shopping!</span>;
@@ -14,7 +15,11 @@ const Cart = ({ cart, cartItemActions }) => {
           <div className="d-flex justify-content-between">
             <h5>Subtotal: {cart.subtotal.formatted_with_symbol} </h5>
             <div>
-              <button className="btn btn-danger mr-2">Empty Cart</button>
+              <button
+                onClick={() => handleEmptyCart()}
+                className="btn btn-danger mr-2">
+                Empty Cart
+              </button>
               <button className="btn btn-primary">Checkout</button>
             </div>
           </div>

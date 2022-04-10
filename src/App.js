@@ -44,6 +44,11 @@ const App = () => {
     setShoppingCart(removed.cart);
   };
 
+  const handleEmptyCart = async () => {
+    const emptied = await cart.empty();
+    setShoppingCart(emptied.cart);
+  };
+
   const fetchCart = async () => {
     const data = await cart.reteive();
     setShoppingCart(data);
@@ -57,7 +62,7 @@ const App = () => {
   }, []);
 
   const productsToPresent = { snacks, juices, fishAndSeafood };
-  const cartActions = {};
+  const cartActions = { handleEmptyCart };
   const cartItemActions = { handleUpdateQuantity, handleRemoveCartItem };
 
   return (
@@ -68,7 +73,11 @@ const App = () => {
         <Route
           path="/cart"
           element={
-            <Cart cart={shoppingCart} cartItemActions={cartItemActions} />
+            <Cart
+              cart={shoppingCart}
+              cartActions={cartActions}
+              cartItemActions={cartItemActions}
+            />
           }
         />
         <Route path="/categories" element={<Categories />} />
