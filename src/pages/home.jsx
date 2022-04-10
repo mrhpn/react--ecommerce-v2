@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { commerce } from '../lib/commerce';
 import products from '../services/products';
 import LoadingProducts from '../components/loadingProducts';
 import Carousel from '../components/carousel';
@@ -16,7 +15,7 @@ const categoriesSlags = [
   'vegetables',
 ];
 
-const Home = () => {
+const Home = ({ onAddToCart }) => {
   const [snacks, setSnacks] = useState([]);
   const [juices, setJuices] = useState([]);
   const [fishAndSeafood, setFishAndSeafood] = useState([]);
@@ -60,7 +59,7 @@ const Home = () => {
           {snacks.length === 0 ? (
             <LoadingProducts />
           ) : (
-            <Products items={snacks} />
+            <Products items={snacks} onAddToCart={onAddToCart} />
           )}
         </div>
 
@@ -77,7 +76,7 @@ const Home = () => {
           {juices.length === 0 ? (
             <LoadingProducts />
           ) : (
-            <Products items={juices} />
+            <Products items={juices} onAddToCart={onAddToCart} />
           )}
         </div>
 
@@ -94,7 +93,7 @@ const Home = () => {
           {fishAndSeafood.length === 0 ? (
             <LoadingProducts />
           ) : (
-            <Products items={fishAndSeafood} />
+            <Products items={fishAndSeafood} onAddToCart={onAddToCart} />
           )}
         </div>
       </div>

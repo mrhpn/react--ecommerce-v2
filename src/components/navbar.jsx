@@ -3,9 +3,10 @@ import { commerce } from '../lib/commerce';
 import logo from '../assets/icons/logo.svg';
 import shoppingCart from '../assets/icons/shopping-cart.svg';
 
-const NavBar = () => {
-  const [isCategoryDropdownVisible, setCategoryDropdownVisible] =
-    useState(false);
+const NavBar = ({ totalItems }) => {
+  const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(
+    false
+  );
   const [categoryDropdown, setCategoryDropDown] = useState(false);
   const [categories, setCategories] = useState([]);
 
@@ -108,7 +109,7 @@ const NavBar = () => {
             <button className="btn bg-transparent position-relative">
               <img src={shoppingCart} alt="..." />
               <span className="badge badge-pill badge-danger mr-4 position-absolute">
-                0
+                {totalItems}
               </span>
             </button>
           </div>

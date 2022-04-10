@@ -1,7 +1,7 @@
 import React from 'react';
 import Product from './product';
 
-const Products = ({ items }) => {
+const Products = ({ items, onAddToCart }) => {
   return (
     <div className="container container__hr-scrollable">
       <div className="row text-center">
@@ -13,6 +13,7 @@ const Products = ({ items }) => {
               name={item.name}
               price={item.price.formatted_with_symbol}
               imgUrl={item.image.url}
+              onAddToCart={onAddToCart}
             />
           );
         })}
