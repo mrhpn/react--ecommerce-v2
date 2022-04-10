@@ -30,8 +30,14 @@ const App = () => {
   };
 
   const handleAddToCart = async (productId, quantity) => {
-    const item = await cart.add(productId, quantity);
-    setShoppingCart(item.cart);
+    const fetchedCart = await cart.add(productId, quantity);
+    setShoppingCart(fetchedCart.cart);
+  };
+
+  const handleUpdateQuantity = async (productId, quantity) => {
+    console.log(quantity);
+    const updatedCart = await cart.update(productId, quantity);
+    setShoppingCart(updatedCart.cart);
   };
 
   const fetchCart = async () => {
@@ -47,13 +53,20 @@ const App = () => {
   }, []);
 
   const productsToPresent = { snacks, juices, fishAndSeafood };
+  const cartActions = {};
+  const cartItemActions = { handleUpdateQuantity };
 
   return (
     <div className="App">
       <NavBar totalItems={shoppingCart.total_items} />
 
       <Routes>
-        <Route path="/cart" element={<Cart cart={shoppingCart} />} />
+        <Route
+          path="/cart"
+          element={
+            <Cart cart={shoppingCart} cartItemActions={cartItemActions} />
+          }
+        />
         <Route path="/categories" element={<Categories />} />
         <Route
           path="/"

@@ -2,7 +2,7 @@ import React from 'react';
 import LoadingProducts from '../components/loadingProducts';
 import CartItem from '../components/cartItem';
 
-const Cart = ({ cart }) => {
+const Cart = ({ cart, cartItemActions }) => {
   const isCartEmpty = cart.total_items === 0;
 
   const EmptyCart = () => <span>Empty cart. Keep Shopping!</span>;
@@ -10,10 +10,19 @@ const Cart = ({ cart }) => {
   const CartProducts = () => {
     if (cart.line_items && cart.line_items.length > 0)
       return (
-        <div className="row text-center mb-5">
-          {cart.line_items.map((item) => (
-            <CartItem item={item} />
-          ))}
+        <div>
+          <div className="d-flex justify-content-between">
+            <h5>Subtotal: {cart.subtotal.formatted_with_symbol} </h5>
+            <div>
+              <button className="btn btn-danger mr-2">Empty Cart</button>
+              <button className="btn btn-primary">Checkout</button>
+            </div>
+          </div>
+          <div className="row text-center mb-5">
+            {cart.line_items.map((item) => (
+              <CartItem item={item} cartItemActions={cartItemActions} />
+            ))}
+          </div>
         </div>
       );
     else return <LoadingProducts />;

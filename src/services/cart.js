@@ -10,6 +10,11 @@ const reteive = async () => {
   return fetchedCart;
 };
 
-const cart = { add, reteive };
+const update = async (productId, quantity) => {
+  const updatedCart = await commerce.cart.update(productId, { quantity });
+  return updatedCart;
+};
+
+const cart = { add, reteive, update };
 
 export default cart;
