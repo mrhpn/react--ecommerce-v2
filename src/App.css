@@ -78,6 +78,16 @@ body {
   animation: animate-btn__add-to-cart 0.3s;
 }
 
+.btn-quantity-control {
+  border: 0;
+  border-radius: 5rem;
+  margin: 2px;
+}
+
+.btn-quantity-control:hover {
+  background-color: #ff359052;
+}
+
 @keyframes animate-btn__add-to-cart {
   0% {
   }
