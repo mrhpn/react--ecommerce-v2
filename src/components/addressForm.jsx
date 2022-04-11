@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import InputText from './inputText';
 import shipping from '../services/shipping';
+import checkout from '../services/checkout';
 
 const AddressForm = ({ checkoutToken }) => {
   const methods = useForm();
@@ -36,6 +37,16 @@ const AddressForm = ({ checkoutToken }) => {
     setShippingSubdivision(Object.keys(fetchedSubdivisions)[0]);
   };
 
+  const fetchShippingOptions = async (checkoutTokenId, country, region) => {
+    const options = await checkout.getShippingOptions(
+      checkoutTokenId,
+      country,
+      region
+    );
+    setShippingOptions(options);
+    setShippingOption(options[0].id);
+  };
+
   useEffect(() => {
     fetchShippingCountries(checkoutToken.id);
   }, []);
@@ -43,6 +54,15 @@ const AddressForm = ({ checkoutToken }) => {
   useEffect(() => {
     if (shippingCountry) fetchShippingSubdivisions(shippingCountry);
   }, [shippingCountry]);
+
+  useEffect(() => {
+    if (shippingSubdivision)
+      fetchShippingOptions(
+        checkoutToken.id,
+        shippingCountry,
+        shippingSubdivision
+      );
+  }, [shippingSubdivision]);
 
   const countries = Object.entries(shippingCountries).map(([code, name]) => ({
     id: code,
@@ -53,18 +73,23 @@ const AddressForm = ({ checkoutToken }) => {
     shippingSubdivisions
   ).map(([code, name]) => ({ id: code, label: name }));
 
+  const options = shippingOptions.map((option) => ({
+    id: option.id,
+    label: `${option.description} - (${option.price.formatted_with_symbol})`,
+  }));
+
   return (
     <>
       <Typography variant="h6">Shopping Address</Typography>
       <FormProvider {...methods}>
         <form onSubmit="" className="mb-5">
           <Grid container spacing={3}>
-            <InputText required={true} name="firstName" label="First Name" />
-            <InputText required={true} name="lastName" label="Last Name" />
-            <InputText required={true} name="address" label="Address" />
-            <InputText required={true} name="email" label="Email" />
-            <InputText required={true} name="city" label="City" />
-            <InputText required={true} name="zip" label="Zip / Postel Code" />
+            <InputText name="firstName" label="First Name" />
+            <InputText name="lastName" label="Last Name" />
+            <InputText name="address" label="Address" />
+            <InputText name="email" label="Email" />
+            <InputText name="city" label="City" />
+            <InputText name="zip" label="Zip / Postel Code" />
             <Grid item xs={12} sm={6}>
               <InputLabel>Shipping Country</InputLabel>
               <Select
@@ -93,14 +118,20 @@ const AddressForm = ({ checkoutToken }) => {
                 ))}
               </Select>
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6}>
               <InputLabel>Shipping Options</InputLabel>
-              <Select value={3} fullWidth onChange="">
-                <MenuItem key={} value={}>
-                  Apple
-                </MenuItem>
+              <Select
+                variant="standard"
+                value={shippingOption}
+                fullWidth
+                onChange={(e) => setShippingOption(e.target.value)}>
+                {options.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.label}
+                  </MenuItem>
+                ))}
               </Select>
-            </Grid> */}
+            </Grid>
           </Grid>
         </form>
       </FormProvider>
