@@ -13,27 +13,45 @@ import shipping from '../services/shipping';
 
 const AddressForm = ({ checkoutToken }) => {
   const methods = useForm();
-  const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingCountry, setShippingCountry] = useState('');
-  const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
+  const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingSubdivision, setShippingSubdivision] = useState('');
-  const [shippingOptions, setShippingOptions] = useState([]);
+  const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
   const [shippingOption, setShippingOption] = useState('');
+  const [shippingOptions, setShippingOptions] = useState([]);
 
   const fetchShippingCountries = async (checkoutTokenId) => {
-    const { countries } = await shipping.getCountries(checkoutTokenId);
-    setShippingCountries(countries);
-    setShippingCountry(Object.keys(countries)[0]);
+    const { countries: fetchedCountries } = await shipping.getCountries(
+      checkoutTokenId
+    );
+    setShippingCountries(fetchedCountries);
+    setShippingCountry(Object.keys(fetchedCountries)[0]);
+  };
+
+  const fetchShippingSubdivisions = async (countryCode) => {
+    const {
+      subdivisions: fetchedSubdivisions,
+    } = await shipping.getSubdivisions(countryCode);
+    setShippingSubdivisions(fetchedSubdivisions);
+    setShippingSubdivision(Object.keys(fetchedSubdivisions)[0]);
   };
 
   useEffect(() => {
     fetchShippingCountries(checkoutToken.id);
   }, []);
 
+  useEffect(() => {
+    if (shippingCountry) fetchShippingSubdivisions(shippingCountry);
+  }, [shippingCountry]);
+
   const countries = Object.entries(shippingCountries).map(([code, name]) => ({
     id: code,
     label: name,
   }));
+
+  const subdivisions = Object.entries(
+    shippingSubdivisions
+  ).map(([code, name]) => ({ id: code, label: name }));
 
   return (
     <>
@@ -54,22 +72,28 @@ const AddressForm = ({ checkoutToken }) => {
                 value={shippingCountry}
                 fullWidth
                 onChange={(e) => setShippingCountry(e.target.value)}>
-                {countries.map((country) => (
-                  <MenuItem key={country.id} value={country.id}>
-                    {country.label}
+                {countries.map((Subdivision) => (
+                  <MenuItem key={Subdivision.id} value={Subdivision.id}>
+                    {Subdivision.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <InputLabel>Shipping Subdivision</InputLabel>
+              <Select
+                variant="standard"
+                value={shippingSubdivision}
+                fullWidth
+                onChange={(e) => setShippingSubdivision(e.target.value)}>
+                {subdivisions.map((subdivision) => (
+                  <MenuItem key={subdivision.id} value={subdivision.id}>
+                    {subdivision.label}
                   </MenuItem>
                 ))}
               </Select>
             </Grid>
             {/* <Grid item xs={12} sm={6}>
-              <InputLabel>Shipping Subdivision</InputLabel>
-              <Select value={3} fullWidth onChange="">
-                <MenuItem key={} value={}>
-                  Apple
-                </MenuItem>
-              </Select>
-            </Grid>
-            <Grid item xs={12} sm={6}>
               <InputLabel>Shipping Options</InputLabel>
               <Select value={3} fullWidth onChange="">
                 <MenuItem key={} value={}>

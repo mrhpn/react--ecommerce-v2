@@ -7,6 +7,11 @@ const getCountries = async (checkoutTokenId) => {
   return response;
 };
 
-const shipping = { getCountries };
+const getSubdivisions = async (countryCode) => {
+  const response = await commerce.services.localeListSubdivisions(countryCode);
+  return response;
+};
+
+const shipping = { getCountries, getSubdivisions };
 
 export default shipping;
