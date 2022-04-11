@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { StepLabel } from '@mui/material';
 import AddressForm from '../components/addressForm';
 import PaymentForm from '../components/paymentForm';
-import { commerce } from '../lib/commerce';
+import checkout from '../services/checkout';
 
 const steps = ['Shipping address', 'Payment'];
 
@@ -35,13 +35,11 @@ const Checkout = ({ cart }) => {
   useEffect(() => {
     const generateToken = async () => {
       try {
-        const token = await commerce.checkout.generateToken(cart.id, {
-          type: 'cart',
-        });
-        console.log('lll');
-        console.log(token);
+        const token = await checkout.generateToken(cart.id);
         setCheckoutToken(token);
-      } catch (error) {}
+      } catch (error) {
+        //todo: handle errors
+      }
     };
 
     generateToken();
