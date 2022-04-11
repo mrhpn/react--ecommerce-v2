@@ -11,8 +11,9 @@ import {
 import InputText from './inputText';
 import shipping from '../services/shipping';
 import checkout from '../services/checkout';
+import { Link } from 'react-router-dom';
 
-const AddressForm = ({ checkoutToken }) => {
+const AddressForm = ({ checkoutToken, next }) => {
   const methods = useForm();
   const [shippingCountry, setShippingCountry] = useState('');
   const [shippingCountries, setShippingCountries] = useState([]);
@@ -82,7 +83,16 @@ const AddressForm = ({ checkoutToken }) => {
     <>
       <Typography variant="h6">Shopping Address</Typography>
       <FormProvider {...methods}>
-        <form onSubmit="" className="mb-5">
+        <form
+          onSubmit={methods.handleSubmit((data) =>
+            next({
+              ...data,
+              shippingCountry,
+              shippingSubdivision,
+              shippingOption,
+            })
+          )}
+          className="mb-5">
           <Grid container spacing={3}>
             <InputText name="firstName" label="First Name" />
             <InputText name="lastName" label="Last Name" />
@@ -133,6 +143,15 @@ const AddressForm = ({ checkoutToken }) => {
               </Select>
             </Grid>
           </Grid>
+          <br />
+          <div className="d-flex justify-content-between">
+            <Button component={Link} to="/cart" variant="outlined">
+              Back to Cart
+            </Button>
+            <Button type="submit" variant="contained" color="primary">
+              Next
+            </Button>
+          </div>
         </form>
       </FormProvider>
     </>
