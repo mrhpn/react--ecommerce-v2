@@ -21,6 +21,7 @@ const InputText = ({ name, label }) => {
         name={name}
         label={label}
         required={true}
+        defaultValue=""
       />
     </Grid>
   );

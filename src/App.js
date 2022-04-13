@@ -8,12 +8,15 @@ import Cart from './pages/cart';
 import Home from './pages/home';
 import Categories from './pages/categories';
 import Checkout from './pages/checkout';
+import { commerce } from './lib/commerce';
 
 const App = () => {
   const [snacks, setSnacks] = useState([]);
   const [juices, setJuices] = useState([]);
   const [fishAndSeafood, setFishAndSeafood] = useState([]);
   const [shoppingCart, setShoppingCart] = useState({});
+  const [order, setOrder] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
 
   const getSancks = async () => {
     const data = await products.getByCategory('snacks');
@@ -55,6 +58,24 @@ const App = () => {
     setShoppingCart(data);
   };
 
+  const refreshCart = async () => {
+    const newCart = await commerce.cart.refresh();
+    setShoppingCart(newCart);
+  };
+
+  const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
+    try {
+      const incomingOrder = await commerce.checkout.capture(
+        checkoutTokenId,
+        newOrder
+      );
+      setOrder(incomingOrder);
+      refreshCart();
+    } catch (error) {
+      setErrorMessage(error.data.error.message);
+    }
+  };
+
   useEffect(() => {
     getSancks();
     getJuices();
@@ -81,7 +102,17 @@ const App = () => {
             />
           }
         />
-        <Route path="/checkout" element={<Checkout cart={shoppingCart} />} />
+        <Route
+          path="/checkout"
+          element={
+            <Checkout
+              cart={shoppingCart}
+              order={order}
+              onCaptureCheckout={handleCaptureCheckout}
+              error={errorMessage}
+            />
+          }
+        />
         <Route path="/categories" element={<Categories />} />
         <Route
           path="/"
