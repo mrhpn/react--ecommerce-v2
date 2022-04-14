@@ -1,4 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { FiMapPin, FiDollarSign } from 'react-icons/fi';
+import { Typography, Divider } from '@mui/material';
+import {
+  Elements,
+  CardElement,
+  ElementsConsumer,
+} from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import {
   ChakraProvider,
   Box,
@@ -16,6 +24,8 @@ import { useForm } from 'react-hook-form';
 import checkout from '../services/checkout';
 import shipping from '../services/shipping';
 import Review1 from '../components/review1';
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 const steps = ['Shipping address', 'Payment'];
 
@@ -108,6 +118,7 @@ const Checkout1 = ({ cart, order, onCaptureCheckout, error }) => {
   const {
     register,
     handleSubmit,
+    getValues,
     trigger,
     formState: { errors },
   } = useForm();
@@ -138,6 +149,65 @@ const Checkout1 = ({ cart, order, onCaptureCheckout, error }) => {
     console.log(values);
   };
 
+  const handlePayment = async (e, elements, stripe) => {
+    e.preventDefault();
+
+    const data = getValues([
+      'firstName',
+      'lastName',
+      'email',
+      'address1',
+      'city',
+      'shippingSubdivision',
+      'zip',
+      'shippingCountry',
+      'shippingOption',
+    ]);
+    console.log(data);
+
+    if (!stripe || !elements) return;
+
+    const cardElement = elements.getElement(CardElement);
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+    });
+
+    if (error) console.log(error);
+    else {
+      const orderData = {
+        line_items: checkoutToken.live.line_items,
+        customer: {
+          firstname: getValues('firstName'),
+          lastname: getValues('lastName'),
+          email: getValues('email'),
+        },
+        shipping: {
+          name: 'Primary',
+          street: getValues('address1'),
+          town_city: getValues('city'),
+          country_state: getValues('shippingSubdivision'),
+          postal_zip_code: getValues('zip'),
+          country: getValues('shippingCountry'),
+        },
+        fulfillment: {
+          shipping_method: getValues('shippingOption'),
+        },
+        payment: {
+          gateway: 'stripe',
+          stripe: {
+            payment_method_id: paymentMethod.id,
+          },
+        },
+      };
+
+      onCaptureCheckout(checkoutToken.id, orderData);
+
+      nextStep();
+    }
+  };
+
   useEffect(() => {
     const generateToken = async () => {
       try {
@@ -156,8 +226,8 @@ const Checkout1 = ({ cart, order, onCaptureCheckout, error }) => {
       <ChakraProvider theme={theme}>
         <Box p={5} maxW={500}>
           <form onSubmit={handleSubmit(handleSubmitForm)}>
-            <Steps colorScheme="telegram" activeStep={activeStep}>
-              <Step label="Address">
+            <Steps colorScheme="messenger" activeStep={activeStep}>
+              <Step label="Address" icon={FiMapPin}>
                 <div className="form-row mt-3">
                   <div className="form-group col-md-6">
                     <FormField
@@ -274,18 +344,61 @@ const Checkout1 = ({ cart, order, onCaptureCheckout, error }) => {
                   </div>
                 </div>
               </Step>
-              <Step label="Payment">
+              <Step label="Payment" icon={FiDollarSign}>
                 <Review1 checkoutToken={checkoutToken} />
+                {/* payment */}
+                {/* <Typography
+                  variant="h6"
+                  gutterBottom
+                  style={{ margin: '20px 0' }}>
+                  Payment method
+                </Typography> */}
+                <div className="h5 my-3">Payment Method</div>
+                <Elements stripe={stripePromise}>
+                  <ElementsConsumer>
+                    {({ elements, stripe }) => (
+                      <form
+                        onSubmit={(e) => handlePayment(e, elements, stripe)}>
+                        <CardElement />
+                        <br />
+                        <div
+                          className="justify-content-end"
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                          }}>
+                          {/* <Button variant="outlined" onClick={backStep}>
+                            Back
+                          </Button> */}
+                          <button
+                            type="submit"
+                            className="btn btn-warning mb-3"
+                            disabled={!stripe}>
+                            Pay{' '}
+                            {checkoutToken.live.subtotal.formatted_with_symbol}
+                          </button>
+                        </div>
+                      </form>
+                    )}
+                  </ElementsConsumer>
+                </Elements>
               </Step>
             </Steps>
-            <Flex gap={2} my={2}>
-              {activeStep !== 0 && <Button onClick={prevStep}>Previous</Button>}
-              {activeStep !== 1 && (
-                <Button onClick={handleNextStep}>Next</Button>
-              )}
-              {activeStep === 1 && <Button type="submit">Submit</Button>}
-            </Flex>
           </form>
+
+          {activeStep === 1 && <hr />}
+          <Flex gap={2} my={2}>
+            {activeStep !== 0 && (
+              <Button className="mt-3" onClick={prevStep}>
+                Previous
+              </Button>
+            )}
+            {activeStep !== 1 && (
+              <Button className="mt-3" onClick={handleNextStep}>
+                Next
+              </Button>
+            )}
+          </Flex>
         </Box>
       </ChakraProvider>
     </div>
