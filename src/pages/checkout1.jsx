@@ -15,6 +15,7 @@ import FormField from '../components/formInputText';
 import { useForm } from 'react-hook-form';
 import checkout from '../services/checkout';
 import shipping from '../services/shipping';
+import Review1 from '../components/review1';
 
 const steps = ['Shipping address', 'Payment'];
 
@@ -181,7 +182,7 @@ const Checkout1 = ({ cart, order, onCaptureCheckout, error }) => {
                     </FormField>
                   </div>
                 </div>
-                <div className="form-row mt-3">
+                <div className="form-row">
                   <div className="form-group col-md-6">
                     <FormField
                       label="Address"
@@ -205,7 +206,7 @@ const Checkout1 = ({ cart, order, onCaptureCheckout, error }) => {
                     </FormField>
                   </div>
                 </div>
-                <div className="form-row mt-3">
+                <div className="form-row">
                   <div className="form-group col-md-6">
                     <FormField
                       label="City"
@@ -229,7 +230,7 @@ const Checkout1 = ({ cart, order, onCaptureCheckout, error }) => {
                     </FormField>
                   </div>
                 </div>
-                <div className="form-row mt-3">
+                <div className="form-row">
                   <div className="form-group col-md-6">
                     <FormLabel>Shipping Country</FormLabel>
                     <Select
@@ -257,7 +258,7 @@ const Checkout1 = ({ cart, order, onCaptureCheckout, error }) => {
                     </Select>
                   </div>
                 </div>
-                <div className="form-row mt-3">
+                <div className="form-row">
                   <div className="form-group col-md-6">
                     <FormLabel>Shipping Options</FormLabel>
                     <Select
@@ -274,21 +275,15 @@ const Checkout1 = ({ cart, order, onCaptureCheckout, error }) => {
                 </div>
               </Step>
               <Step label="Payment">
-                <Box mt={5} mb={3}>
-                  <FormField
-                    label="City"
-                    error={errors.city && errors.city.message}>
-                    <Input {...register('city', { required })} />
-                  </FormField>
-                </Box>
+                <Review1 checkoutToken={checkoutToken} />
               </Step>
             </Steps>
             <Flex gap={2} my={2}>
               {activeStep !== 0 && <Button onClick={prevStep}>Previous</Button>}
-              {activeStep !== 2 && (
+              {activeStep !== 1 && (
                 <Button onClick={handleNextStep}>Next</Button>
               )}
-              {activeStep === 2 && <Button type="submit">Submit</Button>}
+              {activeStep === 1 && <Button type="submit">Submit</Button>}
             </Flex>
           </form>
         </Box>
