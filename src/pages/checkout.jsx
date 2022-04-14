@@ -7,6 +7,7 @@ import { StepLabel } from '@mui/material';
 import AddressForm from '../components/addressForm';
 import PaymentForm from '../components/paymentForm';
 import checkout from '../services/checkout';
+import AddressForm1 from '../components/addressForm1';
 
 const steps = ['Shipping address', 'Payment'];
 

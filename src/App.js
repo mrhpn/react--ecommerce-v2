@@ -8,6 +8,7 @@ import Cart from './pages/cart';
 import Home from './pages/home';
 import Categories from './pages/categories';
 import Checkout from './pages/checkout';
+import Checkout1 from './pages/checkout1';
 import { commerce } from './lib/commerce';
 
 const App = () => {
@@ -105,7 +106,7 @@ const App = () => {
         <Route
           path="/checkout"
           element={
-            <Checkout
+            <Checkout1
               cart={shoppingCart}
               order={order}
               onCaptureCheckout={handleCaptureCheckout}

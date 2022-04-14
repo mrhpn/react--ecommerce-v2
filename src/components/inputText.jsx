@@ -8,6 +8,11 @@ const InputText = ({ name, label }) => {
   return (
     <Grid item xs={12} sm={6}>
       <Controller
+        control={control}
+        name={name}
+        label={label}
+        required={true}
+        defaultValue=""
         render={({ field: { onChange, value } }) => (
           <TextField
             fullWidth
@@ -15,13 +20,10 @@ const InputText = ({ name, label }) => {
             onChange={onChange}
             value={value}
             label={label}
+            required={true}
           />
         )}
-        control={control}
-        name={name}
-        label={label}
-        required={true}
-        defaultValue=""
+        rules={{ required: true }}
       />
     </Grid>
   );
