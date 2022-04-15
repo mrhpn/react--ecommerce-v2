@@ -26,7 +26,7 @@ const maxLength = {
   message: 'Maximum length is 20.',
 };
 
-const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
+const AddressForm = ({ shippingData, checkoutToken, next }) => {
   const [loading, setLoading] = useState(true);
   const [shippingCountry, setShippingCountry] = useState('');
   const [shippingCountries, setShippingCountries] = useState([]);
@@ -314,4 +314,4 @@ const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
   );
 };
 
-export default AddressForm2;
+export default AddressForm;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import LoadingProducts from '../components/loadingProducts';
 import Carousel from '../components/carousel';
 import Footer from '../components/footer';
@@ -20,7 +21,7 @@ const Home = ({ products, onAddToCart }) => {
               Snacks
             </h4>
             <span>
-              <a href="#">View all</a>
+              <Link to="/">View all</Link>
             </span>
           </div>
           {snacks.length === 0 ? (
@@ -40,7 +41,7 @@ const Home = ({ products, onAddToCart }) => {
               Juice
             </h4>
             <span>
-              <a href="#">View all</a>
+              <Link to="/">View all</Link>
             </span>
           </div>
           {juices.length === 0 ? (
@@ -60,7 +61,7 @@ const Home = ({ products, onAddToCart }) => {
               Fish and Seafood
             </h4>
             <span>
-              <a href="#">View all</a>
+              <Link to="/">View all</Link>
             </span>
           </div>
           {fishAndSeafood.length === 0 ? (
