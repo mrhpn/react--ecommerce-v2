@@ -1,6 +1,7 @@
 import React from 'react';
 
 const Review1 = ({ checkoutToken }) => {
+  console.log(checkoutToken);
   return (
     <>
       <div className="h5 mt-4">Order Summary</div>
@@ -16,6 +17,15 @@ const Review1 = ({ checkoutToken }) => {
           <div>{product.line_total.formatted_with_symbol}</div>
         </div>
       ))}
+      <hr />
+      {/* <div
+        className="d-flex justify-content-between"
+        style={{ padding: '10px 0' }}>
+        <div className="display-5">Total</div>
+        <h4 style={{ fontWeight: 700 }}>
+          {checkoutToken}
+        </h4>
+      </div> */}
       <hr />
       <div
         className="d-flex justify-content-between"

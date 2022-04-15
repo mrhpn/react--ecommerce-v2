@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import FormField from './formInputText';
 import { Button, FormLabel, Input, Select } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
+import Loading from './loading';
 
 const required = {
   value: true,
@@ -13,6 +14,7 @@ const required = {
 };
 
 const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
+  const [loading, setLoading] = useState(true);
   const [shippingCountry, setShippingCountry] = useState('');
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingSubdivision, setShippingSubdivision] = useState('');
@@ -113,6 +115,16 @@ const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
     label: name,
   }));
 
+  useEffect(() => {
+    if (
+      shippingCountries.length === 0 ||
+      shippingSubdivisions.length === 0 ||
+      shippingOptions.length === 0
+    )
+      setLoading(true);
+    else setLoading(false);
+  }, [shippingCountries, shippingSubdivisions, shippingOptions]);
+
   const subdivisions = Object.entries(
     shippingSubdivisions
   ).map(([code, name]) => ({ id: code, label: name }));
@@ -204,54 +216,62 @@ const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
             </FormField>
           </div>
         </div>
-        <div className="form-row">
-          <div className="form-group col-md-6">
-            <FormLabel>Shipping Country</FormLabel>
-            <Select
-              value={shippingCountry}
-              onChange={(e) => setShippingCountry(e.target.value)}
-              variant="flushed">
-              {countries.map((country) => (
-                <option key={country.id} value={country.id}>
-                  {country.label}
-                </option>
-              ))}
-            </Select>
-          </div>
-          <div className="form-group col-md-6">
-            <FormLabel>Shipping Subdivision</FormLabel>
-            <Select
-              value={shippingSubdivision}
-              onChange={(e) => setShippingSubdivision(e.target.value)}
-              variant="flushed">
-              {subdivisions.map((subdivision) => (
-                <option key={subdivision.id} value={subdivision.id}>
-                  {subdivision.label}
-                </option>
-              ))}
-            </Select>
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group col-md-6">
-            <FormLabel>Shipping Options</FormLabel>
-            <Select
-              value={shippingOption}
-              onChange={(e) => setShippingOption(e.target.value)}
-              variant="flushed">
-              {options.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.label}
-                </option>
-              ))}
-            </Select>
-          </div>
-        </div>
+
+        {loading ? (
+          <Loading label="Loading Shipping Options..." />
+        ) : (
+          <>
+            <div className="form-row">
+              <div className="form-group col-md-6">
+                <FormLabel>Shipping Country</FormLabel>
+                <Select
+                  value={shippingCountry}
+                  onChange={(e) => setShippingCountry(e.target.value)}
+                  variant="flushed">
+                  {countries.map((country) => (
+                    <option key={country.id} value={country.id}>
+                      {country.label}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div className="form-group col-md-6">
+                <FormLabel>Shipping Subdivision</FormLabel>
+                <Select
+                  value={shippingSubdivision}
+                  onChange={(e) => setShippingSubdivision(e.target.value)}
+                  variant="flushed">
+                  {subdivisions.map((subdivision) => (
+                    <option key={subdivision.id} value={subdivision.id}>
+                      {subdivision.label}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group col-md-6">
+                <FormLabel>Shipping Options</FormLabel>
+                <Select
+                  value={shippingOption}
+                  onChange={(e) => setShippingOption(e.target.value)}
+                  variant="flushed">
+                  {options.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            </div>
+          </>
+        )}
+
         <div className="d-flex justify-content-between mt-3">
           <Button component={Link} to="/cart">
             Back to Cart
           </Button>
-          <Button type="submit" colorScheme="messenger">
+          <Button isDisabled={loading} type="submit" colorScheme="messenger">
             Next
           </Button>
         </div>

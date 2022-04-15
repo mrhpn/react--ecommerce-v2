@@ -19,6 +19,7 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import Loading from '../components/loading';
 
 const steps = [{ label: 'Address' }, { label: 'Payment' }];
 
@@ -77,10 +78,7 @@ const Checkout2 = ({ cart, order, onCaptureCheckout, error }) => {
         </Link>
       </div>
     ) : (
-      <div className="d-flex justify-content-center mx-auto">
-        <Spinner />
-        <div className="ml-3">Performing your order...</div>
-      </div>
+      <Loading label="Performing your order..." />
     );
 
   useEffect(() => {
@@ -104,7 +102,11 @@ const Checkout2 = ({ cart, order, onCaptureCheckout, error }) => {
             <Steps activeStep={activeStep}>
               {steps.map(({ label }, index) => (
                 <Step label={label} key={label}>
-                  {checkoutToken && <Form />}
+                  {checkoutToken ? (
+                    <Form />
+                  ) : (
+                    <Loading label="Preparing a checkout..." />
+                  )}
                 </Step>
               ))}
             </Steps>
