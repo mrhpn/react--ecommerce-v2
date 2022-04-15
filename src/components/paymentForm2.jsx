@@ -19,6 +19,8 @@ const PaymentForm2 = ({
   onCaptureCheckout,
 }) => {
   const [paymentLoading, setPaymentLoading] = useState(true);
+  const [cardError, setCardError] = useState('');
+
   const handleSubmit = async (e, elements, stripe) => {
     e.preventDefault();
 
@@ -31,7 +33,7 @@ const PaymentForm2 = ({
       card: cardElement,
     });
 
-    if (error) console.log(error);
+    if (error) setCardError(error);
     else {
       const orderData = {
         line_items: checkoutToken.live.line_items,
@@ -76,7 +78,7 @@ const PaymentForm2 = ({
               <br />
               {paymentLoading && <Loading label="Loading payment method..." />}
               <CardElement onReady={() => setPaymentLoading(false)} />
-              <br />
+              <div className="text-danger mt-2">{cardError.message}</div>
               <div
                 style={{
                   display: 'flex',
@@ -84,7 +86,7 @@ const PaymentForm2 = ({
                   justifyContent: 'space-between',
                 }}>
                 <Button onClick={backStep}>Back</Button>
-                <Button type="submit" isDisabled={!stripe}>
+                <Button colorScheme="yellow" type="submit" isDisabled={!stripe}>
                   Pay {checkoutToken.live.subtotal.formatted_with_symbol}
                 </Button>
               </div>

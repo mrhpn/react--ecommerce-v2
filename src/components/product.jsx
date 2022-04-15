@@ -10,7 +10,7 @@ const Product = ({ id, name, price, imgUrl, onAddToCart }) => {
           <span className="d-block text-success font-weight-bold">{price}</span>
           <button
             onClick={() => onAddToCart(id, 1)}
-            className="btn btn-sm mt-1 btn__add-to-cart">
+            className="btn btn-sm mt-1 mb-2 btn__add-to-cart">
             Add to cart
           </button>
         </div>

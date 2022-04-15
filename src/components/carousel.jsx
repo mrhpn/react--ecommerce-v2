@@ -1,6 +1,6 @@
 import React from 'react';
-import carouselImg1 from '../assets/imgs/coca-cola.jpg';
-import carouselImg2 from '../assets/imgs/elan-cover.jpg';
+import carouselImg1 from '../assets/imgs/elan-cover.jpg';
+import carouselImg2 from '../assets/imgs/coca-cola.jpg';
 import carouselImg3 from '../assets/imgs/fresh-meats.jpg';
 
 const Carousel = () => {

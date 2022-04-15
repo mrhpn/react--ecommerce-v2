@@ -7,6 +7,10 @@ import FormField from './formInputText';
 import { Button, FormLabel, Input, Select } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import Loading from './loading';
+import {
+  HiOutlineArrowNarrowRight,
+  HiOutlineArrowNarrowLeft,
+} from 'react-icons/hi';
 
 const required = {
   value: true,
@@ -268,11 +272,13 @@ const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
         )}
 
         <div className="d-flex justify-content-between mt-3">
-          <Button component={Link} to="/cart">
-            Back to Cart
-          </Button>
+          <Link to="/cart">
+            <Button>
+              <HiOutlineArrowNarrowLeft className="mr-1" /> Back to Cart
+            </Button>
+          </Link>
           <Button isDisabled={loading} type="submit" colorScheme="messenger">
-            Next
+            Next <HiOutlineArrowNarrowRight className="ml-1" />
           </Button>
         </div>
       </form>

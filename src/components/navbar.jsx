@@ -37,10 +37,10 @@ const NavBar = ({ totalItems }) => {
         <div className="container-fluid">
           <img className="mr-2" width="40px" height="40px" src={logo} />
           <a
-            className="navbar-brand text-danger font-lg font-weight-bold d-none d-sm-block"
+            className="navbar-brand text-primary font-lg font-weight-bold d-none d-sm-block"
             href="#">
             <h3>
-              <b>အဝယ်တော်</b>
+              <b>My Zay</b>
             </h3>
           </a>
           <form className="d-inline-flex d-sm-none input-group-sm">
@@ -97,12 +97,12 @@ const NavBar = ({ totalItems }) => {
                 <input
                   className="form-control mr-sm-2 font-weight-bold"
                   type="search"
-                  placeholder="ဒီမှာရှာပါ..."
+                  placeholder="Search..."
                 />
                 <button
-                  className="btn btn-danger my-sm-0 btn-sm font-weight-bold"
+                  className="btn btn-primary my-sm-0 btn-sm font-weight-bold"
                   type="submit">
-                  ရှာမယ်လေ
+                  Search
                 </button>
               </form>
             </ul>

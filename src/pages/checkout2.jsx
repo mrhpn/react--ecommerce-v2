@@ -4,24 +4,21 @@ import PaymentForm2 from '../components/paymentForm2';
 import checkout from '../services/checkout';
 import AddressForm2 from '../components/addressForm2';
 import { Steps, Step, useSteps, StepsStyleConfig } from 'chakra-ui-steps';
-import { FiMapPin, FiDollarSign } from 'react-icons/fi';
+import { FiShoppingBag, FiMapPin, FiDollarSign } from 'react-icons/fi';
 import {
   ChakraProvider,
   Box,
   extendTheme,
-  Input,
   Flex,
-  Spacer,
-  FormLabel,
   Button,
-  Select,
-  Heading,
-  Spinner,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import Loading from '../components/loading';
 
-const steps = [{ label: 'Address' }, { label: 'Payment' }];
+const steps = [
+  { label: 'Address', icon: FiMapPin },
+  { label: 'Payment', icon: FiDollarSign },
+];
 
 const theme = extendTheme({
   components: {
@@ -73,7 +70,7 @@ const Checkout2 = ({ cart, order, onCaptureCheckout, error }) => {
         <hr />
         <Link to="/">
           <Button mt={3} colorScheme="messenger">
-            Back to Home
+            Keep Shopping <FiShoppingBag className="ml-2" />
           </Button>
         </Link>
       </div>
@@ -99,9 +96,9 @@ const Checkout2 = ({ cart, order, onCaptureCheckout, error }) => {
       <ChakraProvider theme={theme}>
         <Flex flexDir="column" width="100%">
           <Box p={5} maxW={500}>
-            <Steps activeStep={activeStep}>
-              {steps.map(({ label }, index) => (
-                <Step label={label} key={label}>
+            <Steps colorScheme="messenger" activeStep={activeStep}>
+              {steps.map(({ label, icon }) => (
+                <Step label={label} icon={icon} key={label}>
                   {checkoutToken ? (
                     <Form />
                   ) : (

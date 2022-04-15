@@ -13,7 +13,7 @@ const Footer = () => {
             src={logo}
           />
           <a className="navbar-brand py-0" href="#">
-            <span className="h1 font-weight-bold text-danger">အဝယ်တော်</span>
+            <span className="h1 font-weight-bold text-primary">My Zay</span>
           </a>
           <div className="">
             <span className="h5 text-white">Online Shopping Mail</span>
