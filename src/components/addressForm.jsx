@@ -97,13 +97,13 @@ const AddressForm = ({ shippingData, checkoutToken, next }) => {
   };
 
   const fetchShippingOptions = async (checkoutTokenId, country, region) => {
-    const options = await checkout.getShippingOptions(
+    const _options = await checkout.getShippingOptions(
       checkoutTokenId,
       country,
       region
     );
-    setShippingOptions(options);
-    setShippingOption(options[0].id);
+    setShippingOptions(_options);
+    setShippingOption(_options[0].id);
   };
 
   useEffect(() => {

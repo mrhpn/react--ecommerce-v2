@@ -1,10 +1,12 @@
 import { commerce } from '../lib/commerce';
 
 const generateToken = async (cartId) => {
-  const token = await commerce.checkout.generateToken(cartId, {
-    type: 'cart',
-  });
-  return token;
+  if (cartId) {
+    const token = await commerce.checkout.generateToken(cartId, {
+      type: 'cart',
+    });
+    return token;
+  }
 };
 
 const getShippingOptions = async (checkoutTokenId, country, region = null) => {
