@@ -57,6 +57,7 @@ const Checkout2 = ({ cart, order, onCaptureCheckout, error }) => {
           nextStep={nextStep}
         />
       );
+    else return <div>This is wired.</div>;
   };
 
   const Confirmation = () =>
@@ -92,7 +93,7 @@ const Checkout2 = ({ cart, order, onCaptureCheckout, error }) => {
   }, [cart]);
 
   return (
-    <div className="container mx-auto justify-content-center mt-5">
+    <div className="container mx-auto justify-content-center">
       <ChakraProvider theme={theme}>
         <Flex flexDir="column" width="100%">
           <Box p={5} maxW={500}>

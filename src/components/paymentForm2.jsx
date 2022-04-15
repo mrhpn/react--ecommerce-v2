@@ -82,7 +82,7 @@ const PaymentForm2 = ({
               <div
                 style={{
                   display: 'flex',
-                  margin: '20px 0',
+                  margin: '20px 0px 60px 0px',
                   justifyContent: 'space-between',
                 }}>
                 <Button onClick={backStep}>Back</Button>

@@ -13,10 +13,10 @@ const Cart = ({ cart, cartActions, cartItemActions }) => {
   const CartProducts = () => {
     if (cart.line_items && cart.line_items.length > 0)
       return (
-        <div className="mt-5">
+        <div className="my-5">
           <div className="d-flex justify-content-between mt-3">
             <h5>
-              Subtotal:{' '}
+              <small>Subtotal:</small>{' '}
               <span className="text-success">
                 {cart.subtotal.formatted_with_symbol}
               </span>{' '}
@@ -25,16 +25,14 @@ const Cart = ({ cart, cartActions, cartItemActions }) => {
               <button
                 onClick={() => handleEmptyCart()}
                 className="btn btn-sm btn-danger mr-2">
-                Empty Cart <HiOutlineX />
+                Empty Cart
               </button>
               <Link to="/checkout">
-                <button className="btn btn-sm btn-primary">
-                  Checkout <HiCreditCard />
-                </button>
+                <button className="btn btn-sm btn-primary">Checkout</button>
               </Link>
             </div>
           </div>
-          <div className="row text-center mt-3">
+          <div className="row text-center mt-3 mb-5">
             {cart.line_items.map((item) => (
               <CartItem item={item} cartItemActions={cartItemActions} />
             ))}

@@ -3,6 +3,7 @@ import LoadingProducts from '../components/loadingProducts';
 import Carousel from '../components/carousel';
 import Footer from '../components/footer';
 import Products from '../components/products';
+import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
 
 const Home = ({ products, onAddToCart }) => {
   const { snacks, juices, fishAndSeafood } = products;
@@ -27,6 +28,9 @@ const Home = ({ products, onAddToCart }) => {
           ) : (
             <Products items={snacks} onAddToCart={onAddToCart} />
           )}
+          <p className="d-block d-sm-none text-right text-secondary font-italic">
+            <HiOutlineArrowNarrowLeft /> <small>Scroll left to view more</small>
+          </p>
         </div>
 
         {/* Juice */}
@@ -44,6 +48,9 @@ const Home = ({ products, onAddToCart }) => {
           ) : (
             <Products items={juices} onAddToCart={onAddToCart} />
           )}
+          <p className="d-block d-sm-none text-right text-secondary font-italic">
+            <HiOutlineArrowNarrowLeft /> <small>Scroll left to view more</small>
+          </p>
         </div>
 
         {/* Fish and Seafood */}
@@ -61,6 +68,9 @@ const Home = ({ products, onAddToCart }) => {
           ) : (
             <Products items={fishAndSeafood} onAddToCart={onAddToCart} />
           )}
+          <p className="d-block d-sm-none text-right text-secondary font-italic">
+            <HiOutlineArrowNarrowLeft /> <small>Scroll left to view more</small>
+          </p>
         </div>
       </div>
       <Footer />

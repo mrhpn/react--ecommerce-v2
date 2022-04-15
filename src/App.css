@@ -151,3 +151,55 @@ body {
 div::-webkit-scrollbar {
   display: none;
 }
+
+@media (max-width: 576px) {
+  .card__product {
+    width: 9rem;
+    border: 1px solid red;
+  }
+
+  .title__item {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .title__category-size {
+    font-size: 1.2rem;
+  }
+
+  .w__sm-50 {
+    width: 50%;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {
+  .w__md-50 {
+    width: 50%;
+  }
+
+  .card__product {
+    width: 9rem;
+    border: 1px solid red;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .w__md-50 {
+    width: 100%;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+}
+
+/*
+::::::::::::::::::::::::::::::::::::::::::::::::::::
+Custom media queries
+*/
+
+/* Set width to make card deck cards 100% width */
+@media (max-width: 950px) {
+}

@@ -3,6 +3,8 @@ import { commerce } from '../lib/commerce';
 import { Link, NavLink } from 'react-router-dom';
 import logo from '../assets/icons/logo.svg';
 import shoppingCart from '../assets/icons/shopping-cart.svg';
+import { HiOutlineSearch } from 'react-icons/hi';
+import { FiHome, FiGrid, FiShoppingCart, FiUser } from 'react-icons/fi';
 
 const NavBar = ({ totalItems }) => {
   const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(
@@ -47,12 +49,12 @@ const NavBar = ({ totalItems }) => {
             <input
               className="form-control font-weight-bold mr-1"
               type="search"
-              placeholder="ဒီမှာရှာပါ..."
+              placeholder="Search..."
             />
             <button
               className="btn btn-danger align-top btn-sm font-weight-bold"
               type="submit">
-              <ion-icon name="search-outline"></ion-icon>
+              <HiOutlineSearch />
             </button>
           </form>
 
@@ -117,6 +119,39 @@ const NavBar = ({ totalItems }) => {
           </div>
         </div>
       </nav>
+
+      <div className="d-block d-sm-none">
+        <nav className="navbar fixed-bottom bg-glass navbar-light border-top shadow-sm justify-content-between">
+          <NavLink to="/" className="navbar-brand text-center">
+            <FiHome />
+            <span className="d-block text-danger font-weight-bold">
+              <small>Home</small>
+            </span>
+          </NavLink>
+          <NavLink to="/categories" className="navbar-brand text-center">
+            <FiGrid />
+            <span className="d-block">
+              <small>Categories</small>
+            </span>
+          </NavLink>
+          <NavLink to="/cart" className="navbar-brand text-center">
+            <FiShoppingCart />
+            <span className="badge badge-pill badge-danger position-absolute">
+              {totalItems}
+            </span>
+
+            <span className="d-block">
+              <small>Cart</small>
+            </span>
+          </NavLink>
+          <NavLink to="/account" className="navbar-brand text-center">
+            <FiUser />
+            <span className="d-block">
+              <small>Account</small>
+            </span>
+          </NavLink>
+        </nav>
+      </div>
     </React.Fragment>
   );
 };

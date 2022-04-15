@@ -5,7 +5,7 @@ const CartItem = ({ item, cartItemActions }) => {
 
   return (
     <div className="col-6 col-sm-4 col-md-2">
-      <div className="card__product border-0 w-auto" key={item.id}>
+      <div className="card__product border-0 w-auto mb-3" key={item.id}>
         <img src={item.image.url} className="card-img-top" alt={item.name} />
         <div className="text-center">
           <h6 className="title__item mt-2">{item.name}</h6>

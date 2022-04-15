@@ -3,8 +3,8 @@ import logo from '../assets/icons/logo.svg';
 
 const Footer = () => {
   return (
-    <div className="footer border-top py-5 px-3 bg-dark d-none d-sm-block">
-      <div className="container">
+    <div className="footer border-top py-5 px-3 bg-dark pb-5">
+      <div className="container pb-5 mb-3">
         <div className="d-inline">
           <img
             className="mr-2 d-block py-2"

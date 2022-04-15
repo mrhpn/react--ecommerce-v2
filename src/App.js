@@ -79,8 +79,8 @@ const App = () => {
   };
 
   useEffect(() => {
-    getSancks();
-    getJuices();
+    // getSancks();
+    // getJuices();
     getFishAndSeafood();
     fetchCart();
   }, []);
