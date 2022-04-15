@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@chakra-ui/react';
 import {
   Elements,
@@ -7,6 +7,7 @@ import {
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Review1 from '../components/review1';
+import Loading from './loading';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
@@ -17,6 +18,7 @@ const PaymentForm2 = ({
   nextStep,
   onCaptureCheckout,
 }) => {
+  const [paymentLoading, setPaymentLoading] = useState(true);
   const handleSubmit = async (e, elements, stripe) => {
     e.preventDefault();
 
@@ -72,7 +74,8 @@ const PaymentForm2 = ({
           {({ elements, stripe }) => (
             <form onSubmit={(e) => handleSubmit(e, elements, stripe)}>
               <br />
-              <CardElement />
+              {paymentLoading && <Loading label="Loading payment method..." />}
+              <CardElement onReady={() => setPaymentLoading(false)} />
               <br />
               <div
                 style={{
