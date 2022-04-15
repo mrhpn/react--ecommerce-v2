@@ -95,26 +95,24 @@ const Checkout2 = ({ cart, order, onCaptureCheckout, error }) => {
   return (
     <div className="container mx-auto justify-content-center">
       <ChakraProvider theme={theme}>
-        <Flex flexDir="column" width="100%">
-          <Box p={5} maxW={500}>
-            <Steps colorScheme="messenger" activeStep={activeStep}>
-              {steps.map(({ label, icon }) => (
-                <Step label={label} icon={icon} key={label}>
-                  {checkoutToken ? (
-                    <Form />
-                  ) : (
-                    <Loading label="Preparing a checkout..." />
-                  )}
-                </Step>
-              ))}
-            </Steps>
-            {activeStep === steps.length && (
-              <Flex px={4} py={4} width="100%" flexDirection="column">
-                <Confirmation />
-              </Flex>
-            )}
-          </Box>
-        </Flex>
+        <Box p={5} maxW={500}>
+          <Steps colorScheme="messenger" activeStep={activeStep}>
+            {steps.map(({ label, icon }) => (
+              <Step label={label} icon={icon} key={label}>
+                {checkoutToken ? (
+                  <Form />
+                ) : (
+                  <Loading label="Preparing a checkout..." />
+                )}
+              </Step>
+            ))}
+          </Steps>
+          {activeStep === steps.length && (
+            <Flex px={4} py={4} width="100%" flexDirection="column">
+              <Confirmation />
+            </Flex>
+          )}
+        </Box>
       </ChakraProvider>
     </div>
   );

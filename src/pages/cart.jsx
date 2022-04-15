@@ -32,7 +32,9 @@ const Cart = ({ cart, cartActions, cartItemActions }) => {
               </Link>
             </div>
           </div>
-          <div className="row text-center mt-3 mb-5">
+          <div
+            className="row text-center mt-3 mb-5"
+            style={{ paddingBottom: '3rem' }}>
             {cart.line_items.map((item) => (
               <CartItem item={item} cartItemActions={cartItemActions} />
             ))}

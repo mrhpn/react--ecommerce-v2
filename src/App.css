@@ -10,7 +10,13 @@ body {
 }
 
 .active {
-  font-weight: bold;
+  color: #0068f6 !important;
+  background-color: #f1efef !important;
+  border-radius: 15px !important;
+}
+
+a {
+  color: red;
 }
 
 .bg-glass {

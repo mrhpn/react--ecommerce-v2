@@ -122,33 +122,25 @@ const NavBar = ({ totalItems }) => {
 
       <div className="d-block d-sm-none">
         <nav className="navbar fixed-bottom bg-glass navbar-light border-top shadow-sm justify-content-between">
-          <NavLink to="/" className="navbar-brand text-center">
+          <NavLink to="/" className="nav-link text-center">
             <FiHome />
-            <span className="d-block text-danger font-weight-bold">
-              <small>Home</small>
-            </span>
+            <span className="d-block">Home</span>
           </NavLink>
-          <NavLink to="/categories" className="navbar-brand text-center">
+          <NavLink to="/categories" className="nav-link text-center">
             <FiGrid />
-            <span className="d-block">
-              <small>Categories</small>
-            </span>
+            <span className="d-block">Categories</span>
           </NavLink>
-          <NavLink to="/cart" className="navbar-brand text-center">
+          <NavLink to="/cart" className="nav-link text-center">
             <FiShoppingCart />
             <span className="badge badge-pill badge-danger position-absolute">
               {totalItems}
             </span>
 
-            <span className="d-block">
-              <small>Cart</small>
-            </span>
+            <span className="d-block">Cart</span>
           </NavLink>
-          <NavLink to="/account" className="navbar-brand text-center">
+          <NavLink to="/account" className="nav-link text-center">
             <FiUser />
-            <span className="d-block">
-              <small>Account</small>
-            </span>
+            <span className="d-block">Account</span>
           </NavLink>
         </nav>
       </div>
