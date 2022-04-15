@@ -17,6 +17,16 @@ const required = {
   message: 'This is required.',
 };
 
+const minLength = {
+  value: 3,
+  message: 'Minimum length is 3.',
+};
+
+const maxLength = {
+  value: 20,
+  message: 'Maximum length is 20.',
+};
+
 const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
   const [loading, setLoading] = useState(true);
   const [shippingCountry, setShippingCountry] = useState('');
@@ -42,6 +52,7 @@ const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
     trigger,
     formState: { errors },
   } = useForm({
+    mode: 'onTouched',
     defaultValues: {
       firstName: _firstName,
       lastName: _lastName,
@@ -138,6 +149,28 @@ const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
     label: `${option.description} - (${option.price.formatted_with_symbol})`,
   }));
 
+  const isValidEmail = (email) =>
+    // eslint-disable-next-line no-useless-escape
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email
+    );
+
+  const handleEmailValidation = (email) => {
+    console.log('ValidateEmail was called with', email);
+
+    const isValid = isValidEmail(email);
+
+    const validityChanged =
+      (errors.email && isValid) || (!errors.email && !isValid);
+    if (validityChanged) {
+      console.log('Fire tracker with', isValid ? 'Valid' : 'Invalid');
+    }
+
+    return isValid;
+  };
+
+  console.log(errors);
+
   return (
     <>
       <div className="h5 mt-4">Shipping Address</div>
@@ -158,7 +191,7 @@ const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
               <Input
                 variant="flushed"
                 placeholder="John"
-                {...register('firstName', { required })}
+                {...register('firstName', { required, minLength })}
               />
             </FormField>
           </div>
@@ -169,7 +202,7 @@ const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
               <Input
                 variant="flushed"
                 placeholder="Wick"
-                {...register('lastName', { required })}
+                {...register('lastName', { required, minLength })}
               />
             </FormField>
           </div>
@@ -182,18 +215,29 @@ const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
               <Input
                 variant="flushed"
                 placeholder="No.1 Chan Aye Thar Zan"
-                {...register('address', { required })}
+                {...register('address', { required, maxLength })}
               />
             </FormField>
           </div>
           <div className="form-group col-md-6">
             <FormField
               label="Email"
-              error={errors.email && errors.email.message}>
+              // error={errors.email && errors.email.message}>
+              error={
+                (errors.email &&
+                  errors.email.type === 'required' &&
+                  errors.email.message) ||
+                (errors.email &&
+                  errors.email.type === 'validate' &&
+                  'Enter valid email.')
+              }>
               <Input
                 variant="flushed"
                 placeholder="john@example.com"
-                {...register('email', { required })}
+                {...register('email', {
+                  required,
+                  validate: handleEmailValidation,
+                })}
               />
             </FormField>
           </div>
