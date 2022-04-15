@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import Paper from '@mui/material/Paper';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import Typography from '@mui/material/Typography';
-import { StepLabel } from '@mui/material';
-import AddressForm from '../components/addressForm';
 import PaymentForm from '../components/paymentForm';
+import AddressForm from '../components/addressForm';
 import checkout from '../services/checkout';
-import AddressForm1 from '../components/addressForm1';
+import { Steps, Step, useSteps, StepsStyleConfig } from 'chakra-ui-steps';
+import { FiShoppingBag, FiMapPin, FiDollarSign } from 'react-icons/fi';
+import {
+  ChakraProvider,
+  Box,
+  extendTheme,
+  Flex,
+  Button,
+} from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import Loading from '../components/loading';
 
-const steps = ['Shipping address', 'Payment'];
+const steps = [
+  { label: 'Address', icon: FiMapPin },
+  { label: 'Payment', icon: FiDollarSign },
+];
 
-const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
-  const [activeStep, setActiveStep] = useState(0);
-  const [completed, setCompleted] = useState({});
-  const [checkoutToken, setCheckoutToken] = useState(null);
+const theme = extendTheme({
+  components: {
+    Steps: StepsStyleConfig,
+  },
+});
+
+const Checkout = ({ cart, order, onCaptureCheckout }) => {
+  const { nextStep, prevStep, activeStep } = useSteps({
+    initialStep: 0,
+  });
+  const [checkoutToken, setCheckoutToken] = useState(null); // todo: change default value to null
   const [shippingData, setShippingData] = useState({});
 
   const next = (data) => {
@@ -22,23 +37,46 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     nextStep();
   };
 
-  const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const Form = () => {
+    if (activeStep === 0)
+      return (
+        <AddressForm
+          shippingData={shippingData}
+          checkoutToken={checkoutToken}
+          next={next}
+        />
+      );
+    else if (activeStep === 1)
+      return (
+        <PaymentForm
+          shippingData={shippingData}
+          checkoutToken={checkoutToken}
+          onCaptureCheckout={onCaptureCheckout}
+          backStep={prevStep}
+          nextStep={nextStep}
+        />
+      );
+    else return <div>This is wired.</div>;
+  };
 
-  const Form = () =>
-    activeStep === 0 ? (
-      <AddressForm checkoutToken={checkoutToken} next={next} />
+  const Confirmation = () =>
+    order.customer ? (
+      <div>
+        <div className="h5 mt-4">
+          Thank you for your purchase, {order.customer.firstname}{' '}
+          {order.customer.lastname} !
+        </div>
+        <h5 className="my-3">Order reference: {order.customer_reference}</h5>
+        <hr />
+        <Link to="/">
+          <Button mt={3} colorScheme="messenger">
+            Keep Shopping <FiShoppingBag className="ml-2" />
+          </Button>
+        </Link>
+      </div>
     ) : (
-      <PaymentForm
-        shippingData={shippingData}
-        checkoutToken={checkoutToken}
-        backStep={backStep}
-        onCaptureCheckout={onCaptureCheckout}
-        nextStep={nextStep}
-      />
+      <Loading label="Performing your order..." />
     );
-
-  const Confirmation = () => <div>Confirmation</div>;
 
   useEffect(() => {
     const generateToken = async () => {
@@ -54,26 +92,27 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
   }, [cart]);
 
   return (
-    <div className="container d-flex justify-content-center mt-5">
-      <Paper sx={{ width: '50%' }}>
-        <Typography variant="h5" margin={3} align="center">
-          Checkout
-        </Typography>
-        <Stepper activeStep={activeStep} className="mx-4">
-          {steps.map((label, index) => (
-            <Step key={index}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <div className="mx-5 mt-3">
-          {activeStep === steps.length ? (
-            <Confirmation />
-          ) : (
-            checkoutToken && <Form />
+    <div className="container mx-auto justify-content-center">
+      <ChakraProvider theme={theme}>
+        <Box p={5} maxW={500}>
+          <Steps colorScheme="messenger" activeStep={activeStep}>
+            {steps.map(({ label, icon }) => (
+              <Step label={label} icon={icon} key={label}>
+                {checkoutToken ? (
+                  <Form />
+                ) : (
+                  <Loading label="Preparing a checkout..." />
+                )}
+              </Step>
+            ))}
+          </Steps>
+          {activeStep === steps.length && (
+            <Flex px={4} py={4} width="100%" flexDirection="column">
+              <Confirmation />
+            </Flex>
           )}
-        </div>
-      </Paper>
+        </Box>
+      </ChakraProvider>
     </div>
   );
 };

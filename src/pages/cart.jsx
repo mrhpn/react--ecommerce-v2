@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import LoadingProducts from '../components/loadingProducts';
 import CartItem from '../components/cartItem';
-import { HiOutlineX, HiCreditCard } from 'react-icons/hi';
 
 const Cart = ({ cart, cartActions, cartItemActions }) => {
   const { handleEmptyCart } = cartActions;
@@ -35,8 +34,12 @@ const Cart = ({ cart, cartActions, cartItemActions }) => {
           <div
             className="row text-center mt-3 mb-5"
             style={{ paddingBottom: '3rem' }}>
-            {cart.line_items.map((item) => (
-              <CartItem item={item} cartItemActions={cartItemActions} />
+            {cart.line_items.map((item, index) => (
+              <CartItem
+                key={index}
+                item={item}
+                cartItemActions={cartItemActions}
+              />
             ))}
           </div>
         </div>

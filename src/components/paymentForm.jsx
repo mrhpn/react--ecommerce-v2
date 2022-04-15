@@ -1,12 +1,13 @@
-import React from 'react';
-import { Typography, Button, Divider } from '@mui/material';
+import React, { useState } from 'react';
+import { Button } from '@chakra-ui/react';
 import {
   Elements,
   CardElement,
   ElementsConsumer,
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import Review from '../components/review';
+import Review from './review';
+import Loading from './loading';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
@@ -17,6 +18,9 @@ const PaymentForm = ({
   nextStep,
   onCaptureCheckout,
 }) => {
+  const [paymentLoading, setPaymentLoading] = useState(true);
+  const [cardError, setCardError] = useState('');
+
   const handleSubmit = async (e, elements, stripe) => {
     e.preventDefault();
 
@@ -29,7 +33,7 @@ const PaymentForm = ({
       card: cardElement,
     });
 
-    if (error) console.log(error);
+    if (error) setCardError(error);
     else {
       const orderData = {
         line_items: checkoutToken.live.line_items,
@@ -40,7 +44,7 @@ const PaymentForm = ({
         },
         shipping: {
           name: 'Primary',
-          street: shippingData.address1,
+          street: shippingData.address,
           town_city: shippingData.city,
           country_state: shippingData.shippingSubdivision,
           postal_zip_code: shippingData.zip,
@@ -64,33 +68,25 @@ const PaymentForm = ({
   };
 
   return (
-    <>
+    <div>
       <Review checkoutToken={checkoutToken} />
-      <Divider />
-      <Typography variant="h6" gutterBottom style={{ margin: '20px 0' }}>
-        Payment method
-      </Typography>
+      <hr />
       <Elements stripe={stripePromise}>
         <ElementsConsumer>
           {({ elements, stripe }) => (
             <form onSubmit={(e) => handleSubmit(e, elements, stripe)}>
-              <CardElement />
               <br />
-              <br />
+              {paymentLoading && <Loading label="Loading payment method..." />}
+              <CardElement onReady={() => setPaymentLoading(false)} />
+              <div className="text-danger mt-2">{cardError.message}</div>
               <div
                 style={{
                   display: 'flex',
-                  margin: '20px 0',
+                  margin: '20px 0px 60px 0px',
                   justifyContent: 'space-between',
                 }}>
-                <Button variant="outlined" onClick={backStep}>
-                  Back
-                </Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  disabled={!stripe}
-                  color="primary">
+                <Button onClick={backStep}>Back</Button>
+                <Button colorScheme="yellow" type="submit" isDisabled={!stripe}>
                   Pay {checkoutToken.live.subtotal.formatted_with_symbol}
                 </Button>
               </div>
@@ -98,7 +94,7 @@ const PaymentForm = ({
           )}
         </ElementsConsumer>
       </Elements>
-    </>
+    </div>
   );
 };
 

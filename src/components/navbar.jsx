@@ -10,12 +10,11 @@ const NavBar = ({ totalItems }) => {
   const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(
     false
   );
-  const [categoryDropdown, setCategoryDropDown] = useState(false);
+  const [categoryDropdown] = useState(false);
   const [categories, setCategories] = useState([]);
 
   const getCategories = async () => {
     const a = await commerce.categories.list();
-    console.log(a);
     setCategories(a.data);
   };
 
@@ -27,24 +26,30 @@ const NavBar = ({ totalItems }) => {
     <React.Fragment>
       <div className="bg-dark text-white text-right pr-3 py-1 d-none d-md-block">
         <span className="mr-3">Phone: +959767682526, +959442264024</span>
-        <a href="#" className="mr-2 link-blue">
+        <Link to="/about" className="mr-2 link-blue">
           About Us
-        </a>
-        <a href="#" className="link-blue">
+        </Link>
+        <Link to="/contact" className="link-blue">
           Contact Us
-        </a>
+        </Link>
       </div>
 
       <nav className="navbar navbar-expand-lg sticky-top navbar-light bg-glass border-bottom shadow-sm">
         <div className="container-fluid">
-          <img className="mr-2" width="40px" height="40px" src={logo} />
-          <a
+          <img
+            className="mr-2"
+            width="40px"
+            height="40px"
+            src={logo}
+            alt="logo"
+          />
+          <Link
             className="navbar-brand text-primary font-lg font-weight-bold d-none d-sm-block"
-            href="#">
+            to="/">
             <h3>
               <b>My Zay</b>
             </h3>
-          </a>
+          </Link>
           <form className="d-inline-flex d-sm-none input-group-sm">
             <input
               className="form-control font-weight-bold mr-1"

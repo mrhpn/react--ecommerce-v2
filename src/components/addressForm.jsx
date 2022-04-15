@@ -1,26 +1,84 @@
 import React, { useState, useEffect } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
-import {
-  InputLabel,
-  Select,
-  MenuItem,
-  Button,
-  Grid,
-  Typography,
-} from '@mui/material';
-import InputText from './inputText';
 import shipping from '../services/shipping';
 import checkout from '../services/checkout';
 import { Link } from 'react-router-dom';
+import FormField from './formInputText';
+import { Button, FormLabel, Input, Select } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
+import Loading from './loading';
+import {
+  HiOutlineArrowNarrowRight,
+  HiOutlineArrowNarrowLeft,
+} from 'react-icons/hi';
 
-const AddressForm = ({ checkoutToken, next }) => {
-  const methods = useForm();
+const required = {
+  value: true,
+  message: 'This is required.',
+};
+
+const minLength = {
+  value: 3,
+  message: 'Minimum length is 3.',
+};
+
+const maxLength = {
+  value: 20,
+  message: 'Maximum length is 20.',
+};
+
+const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
+  const [loading, setLoading] = useState(true);
   const [shippingCountry, setShippingCountry] = useState('');
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingSubdivision, setShippingSubdivision] = useState('');
   const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
   const [shippingOption, setShippingOption] = useState('');
   const [shippingOptions, setShippingOptions] = useState([]);
+
+  const _firstName = shippingData.firstName;
+  const _lastName = shippingData.lastName;
+  const _address = shippingData.address;
+  const _email = shippingData.email;
+  const _city = shippingData.city;
+  const _zip = shippingData.zip;
+  const _shippingCountry = shippingData.shippingCountry;
+  const _shippingSubdivision = shippingData.shippingSubdivision;
+  const _shippingOption = shippingData.shippingOption;
+
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    formState: { errors },
+  } = useForm({
+    mode: 'onTouched',
+    defaultValues: {
+      firstName: _firstName,
+      lastName: _lastName,
+      address: _address,
+      email: _email,
+      city: _city,
+      zip: _zip,
+      shippingCountry: _shippingCountry,
+      shippingSubdivision: _shippingSubdivision,
+      shippingOption: _shippingOption,
+    },
+  });
+
+  const handleNextStep = async (values) => {
+    let isValid = false;
+
+    isValid = await trigger([
+      'firstName',
+      'lastName',
+      'address',
+      'email',
+      'city',
+      'zip',
+    ]);
+
+    if (isValid) next(values);
+  };
 
   const fetchShippingCountries = async (checkoutTokenId) => {
     const { countries: fetchedCountries } = await shipping.getCountries(
@@ -70,6 +128,16 @@ const AddressForm = ({ checkoutToken, next }) => {
     label: name,
   }));
 
+  useEffect(() => {
+    if (
+      shippingCountries.length === 0 ||
+      shippingSubdivisions.length === 0 ||
+      shippingOptions.length === 0
+    )
+      setLoading(true);
+    else setLoading(false);
+  }, [shippingCountries, shippingSubdivisions, shippingOptions]);
+
   const subdivisions = Object.entries(
     shippingSubdivisions
   ).map(([code, name]) => ({ id: code, label: name }));
@@ -79,83 +147,171 @@ const AddressForm = ({ checkoutToken, next }) => {
     label: `${option.description} - (${option.price.formatted_with_symbol})`,
   }));
 
+  const isValidEmail = (email) =>
+    // eslint-disable-next-line no-useless-escape
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email
+    );
+
+  const handleEmailValidation = (email) => isValidEmail(email);
+
   return (
     <>
-      <Typography variant="h6">Shopping Address</Typography>
-      <FormProvider {...methods}>
-        <form
-          onSubmit={methods.handleSubmit((data) =>
-            next({
-              ...data,
-              shippingCountry,
-              shippingSubdivision,
-              shippingOption,
-            })
-          )}
-          className="mb-5">
-          <Grid container spacing={3}>
-            <InputText name="firstName" label="First Name" />
-            <InputText name="lastName" label="Last Name" />
-            <InputText name="address1" label="Address" />
-            <InputText name="email" label="Email" />
-            <InputText name="city" label="City" />
-            <InputText name="zip" label="Zip / Postel Code" />
-            <Grid item xs={12} sm={6}>
-              <InputLabel>Shipping Country</InputLabel>
-              <Select
-                variant="standard"
-                value={shippingCountry}
-                fullWidth
-                onChange={(e) => setShippingCountry(e.target.value)}>
-                {countries.map((Subdivision) => (
-                  <MenuItem key={Subdivision.id} value={Subdivision.id}>
-                    {Subdivision.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <InputLabel>Shipping Subdivision</InputLabel>
-              <Select
-                variant="standard"
-                value={shippingSubdivision}
-                fullWidth
-                onChange={(e) => setShippingSubdivision(e.target.value)}>
-                {subdivisions.map((subdivision) => (
-                  <MenuItem key={subdivision.id} value={subdivision.id}>
-                    {subdivision.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <InputLabel>Shipping Options</InputLabel>
-              <Select
-                variant="standard"
-                value={shippingOption}
-                fullWidth
-                onChange={(e) => setShippingOption(e.target.value)}>
-                {options.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-          </Grid>
-          <br />
-          <div className="d-flex justify-content-between">
-            <Button component={Link} to="/cart" variant="outlined">
-              Back to Cart
-            </Button>
-            <Button type="submit" variant="contained" color="primary">
-              Next
-            </Button>
+      <div className="h5 mt-4">Shipping Address</div>
+      <form
+        onSubmit={handleSubmit((values) =>
+          handleNextStep({
+            ...values,
+            shippingCountry,
+            shippingSubdivision,
+            shippingOption,
+          })
+        )}>
+        <div className="form-row mt-3">
+          <div className="form-group col-md-6">
+            <FormField
+              label="First Name"
+              error={errors.firstName && errors.firstName.message}>
+              <Input
+                variant="flushed"
+                placeholder="John"
+                {...register('firstName', { required, minLength })}
+              />
+            </FormField>
           </div>
-        </form>
-      </FormProvider>
+          <div className="form-group col-md-6">
+            <FormField
+              label="Last Name"
+              error={errors.lastName && errors.lastName.message}>
+              <Input
+                variant="flushed"
+                placeholder="Wick"
+                {...register('lastName', { required, minLength })}
+              />
+            </FormField>
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group col-md-6">
+            <FormField
+              label="Address"
+              error={errors.address && errors.address.message}>
+              <Input
+                variant="flushed"
+                placeholder="No.1 Chan Aye Thar Zan"
+                {...register('address', { required, maxLength })}
+              />
+            </FormField>
+          </div>
+          <div className="form-group col-md-6">
+            <FormField
+              label="Email"
+              // error={errors.email && errors.email.message}>
+              error={
+                (errors.email &&
+                  errors.email.type === 'required' &&
+                  errors.email.message) ||
+                (errors.email &&
+                  errors.email.type === 'validate' &&
+                  'Enter valid email.')
+              }>
+              <Input
+                variant="flushed"
+                placeholder="john@example.com"
+                {...register('email', {
+                  required,
+                  validate: handleEmailValidation,
+                })}
+              />
+            </FormField>
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group col-md-6">
+            <FormField label="City" error={errors.city && errors.city.message}>
+              <Input
+                variant="flushed"
+                placeholder="Yangon"
+                {...register('city', { required })}
+              />
+            </FormField>
+          </div>
+          <div className="form-group col-md-6">
+            <FormField
+              label="ZIP / Postal Code"
+              error={errors.zip && errors.zip.message}>
+              <Input
+                variant="flushed"
+                placeholder="11008"
+                {...register('zip', { required })}
+              />
+            </FormField>
+          </div>
+        </div>
+
+        {loading ? (
+          <Loading label="Loading Shipping Options..." />
+        ) : (
+          <>
+            <div className="form-row">
+              <div className="form-group col-md-6">
+                <FormLabel>Shipping Country</FormLabel>
+                <Select
+                  value={shippingCountry}
+                  onChange={(e) => setShippingCountry(e.target.value)}
+                  variant="flushed">
+                  {countries.map((country) => (
+                    <option key={country.id} value={country.id}>
+                      {country.label}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div className="form-group col-md-6">
+                <FormLabel>Shipping Subdivision</FormLabel>
+                <Select
+                  value={shippingSubdivision}
+                  onChange={(e) => setShippingSubdivision(e.target.value)}
+                  variant="flushed">
+                  {subdivisions.map((subdivision) => (
+                    <option key={subdivision.id} value={subdivision.id}>
+                      {subdivision.label}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group col-md-6">
+                <FormLabel>Shipping Options</FormLabel>
+                <Select
+                  value={shippingOption}
+                  onChange={(e) => setShippingOption(e.target.value)}
+                  variant="flushed">
+                  {options.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            </div>
+          </>
+        )}
+
+        <div className="d-flex justify-content-between mt-3">
+          <Link to="/cart">
+            <Button>
+              <HiOutlineArrowNarrowLeft className="mr-1" /> Back to Cart
+            </Button>
+          </Link>
+          <Button isDisabled={loading} type="submit" colorScheme="messenger">
+            Next <HiOutlineArrowNarrowRight className="ml-1" />
+          </Button>
+        </div>
+      </form>
     </>
   );
 };
 
-export default AddressForm;
+export default AddressForm2;

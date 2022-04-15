@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../assets/icons/logo.svg';
 
 const Footer = () => {
@@ -7,14 +8,15 @@ const Footer = () => {
       <div className="container pb-5 mb-3">
         <div className="d-inline">
           <img
+            alt="logo"
             className="mr-2 d-block py-2"
             width="80px"
             height="80px"
             src={logo}
           />
-          <a className="navbar-brand py-0" href="#">
+          <Link className="navbar-brand py-0" to="/">
             <span className="h1 font-weight-bold text-primary">My Zay</span>
-          </a>
+          </Link>
           <div className="">
             <span className="h5 text-white">Online Shopping Mail</span>
             <br />

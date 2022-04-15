@@ -7,8 +7,8 @@ const loadingProducts = () => {
     <>
       <div className="container flex">
         <div className="row text-center">
-          {_.range(1, 7).map(() => (
-            <div className="col-6 col-sm-4 col-md-2">
+          {_.range(1, 7).map((index) => (
+            <div className="col-6 col-sm-4 col-md-2" key={index}>
               <Skeleton variant="rectangular" width={150} height={118} />
               <Skeleton />
               <Skeleton width="60%" />

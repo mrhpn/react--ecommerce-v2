@@ -7,10 +7,8 @@ import './App.css';
 import Cart from './pages/cart';
 import Home from './pages/home';
 import Categories from './pages/categories';
-import Checkout from './pages/checkout';
-import Checkout1 from './pages/checkout1';
 import { commerce } from './lib/commerce';
-import Checkout2 from './pages/checkout2';
+import Checkout from './pages/checkout';
 
 const App = () => {
   const [snacks, setSnacks] = useState([]);
@@ -107,7 +105,7 @@ const App = () => {
         <Route
           path="/checkout"
           element={
-            <Checkout2
+            <Checkout
               cart={shoppingCart}
               order={order}
               onCaptureCheckout={handleCaptureCheckout}
