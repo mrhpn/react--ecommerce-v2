@@ -26,10 +26,10 @@ const NavBar = ({ totalItems }) => {
     <React.Fragment>
       <div className="bg-dark text-white text-right pr-3 py-1 d-none d-md-block">
         <span className="mr-3">Phone: +959767682526, +959442264024</span>
-        <Link to="/about" className="mr-2 link-blue">
+        <Link to="/" className="mr-2 link-blue">
           About Us
         </Link>
-        <Link to="/contact" className="link-blue">
+        <Link to="/" className="link-blue">
           Contact Us
         </Link>
       </div>

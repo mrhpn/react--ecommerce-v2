@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import products from './services/products';
 import NavBar from './components/navbar';
 import cart from './services/cart';
@@ -9,6 +9,7 @@ import Home from './pages/home';
 import Categories from './pages/categories';
 import { commerce } from './lib/commerce';
 import Checkout from './pages/checkout';
+import NotFound from './pages/app/notFound';
 
 const App = () => {
   const [snacks, setSnacks] = useState([]);
@@ -116,10 +117,13 @@ const App = () => {
         <Route path="/categories" element={<Categories />} />
         <Route
           path="/"
+          exact
           element={
             <Home products={productsToPresent} onAddToCart={handleAddToCart} />
           }
         />
+        <Route path="*" element={<Navigate to="/not-found" />} />
+        <Route path="/not-found" element={<NotFound />} />
       </Routes>
     </div>
   );
