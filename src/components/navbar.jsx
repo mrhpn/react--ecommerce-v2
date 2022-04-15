@@ -36,21 +36,21 @@ const NavBar = ({ totalItems }) => {
 
       <nav className="navbar navbar-expand-lg sticky-top navbar-light bg-glass border-bottom shadow-sm">
         <div className="container-fluid">
-          <img
-            className="mr-2"
-            width="40px"
-            height="40px"
-            src={logo}
-            alt="logo"
-          />
-          <Link
-            className="navbar-brand text-primary font-lg font-weight-bold d-none d-sm-block"
-            to="/">
-            <h3>
-              <b>My Zay</b>
-            </h3>
-          </Link>
-          <form className="d-inline-flex d-sm-none input-group-sm">
+          <div className="d-flex mr-3">
+            <img
+              className="mr-2"
+              width="40px"
+              height="40px"
+              src={logo}
+              alt="logo"
+            />
+            <Link className="text-primary font-lg font-weight-bold" to="/">
+              <h3>
+                <b>My Zay</b>
+              </h3>
+            </Link>
+          </div>
+          <form className="d-inline-flex d-lg-none input-group-sm">
             <input
               className="form-control font-weight-bold mr-1"
               type="search"
@@ -125,7 +125,7 @@ const NavBar = ({ totalItems }) => {
         </div>
       </nav>
 
-      <div className="d-block d-sm-none">
+      <div className="d-md-block d-lg-none">
         <nav className="navbar fixed-bottom bg-glass navbar-light border-top shadow-sm justify-content-between">
           <NavLink to="/" className="nav-link text-center">
             <FiHome />
