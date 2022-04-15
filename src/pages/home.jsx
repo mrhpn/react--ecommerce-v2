@@ -29,7 +29,7 @@ const Home = ({ products, onAddToCart }) => {
           ) : (
             <Products items={snacks} onAddToCart={onAddToCart} />
           )}
-          <p className="d-block d-sm-none text-right text-secondary font-italic">
+          <p className="d-block d-md-none text-right text-secondary font-italic">
             <HiOutlineArrowNarrowLeft /> <small>Scroll left to view more</small>
           </p>
         </div>
@@ -49,7 +49,7 @@ const Home = ({ products, onAddToCart }) => {
           ) : (
             <Products items={juices} onAddToCart={onAddToCart} />
           )}
-          <p className="d-block d-sm-none text-right text-secondary font-italic">
+          <p className="d-block d-md-none text-right text-secondary font-italic">
             <HiOutlineArrowNarrowLeft /> <small>Scroll left to view more</small>
           </p>
         </div>
@@ -69,7 +69,7 @@ const Home = ({ products, onAddToCart }) => {
           ) : (
             <Products items={fishAndSeafood} onAddToCart={onAddToCart} />
           )}
-          <p className="d-block d-sm-none text-right text-secondary font-italic">
+          <p className="d-block d-md-none text-right text-secondary font-italic">
             <HiOutlineArrowNarrowLeft /> <small>Scroll left to view more</small>
           </p>
         </div>
