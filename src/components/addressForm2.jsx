@@ -12,7 +12,7 @@ const required = {
   message: 'This is required.',
 };
 
-const AddressForm2 = ({ checkoutToken, next }) => {
+const AddressForm2 = ({ shippingData, checkoutToken, next }) => {
   const [shippingCountry, setShippingCountry] = useState('');
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingSubdivision, setShippingSubdivision] = useState('');
@@ -20,13 +20,34 @@ const AddressForm2 = ({ checkoutToken, next }) => {
   const [shippingOption, setShippingOption] = useState('');
   const [shippingOptions, setShippingOptions] = useState([]);
 
+  const _firstName = shippingData.firstName;
+  const _lastName = shippingData.lastName;
+  const _address = shippingData.address;
+  const _email = shippingData.email;
+  const _city = shippingData.city;
+  const _zip = shippingData.zip;
+  const _shippingCountry = shippingData.shippingCountry;
+  const _shippingSubdivision = shippingData.shippingSubdivision;
+  const _shippingOption = shippingData.shippingOption;
+
   const {
     register,
     handleSubmit,
-    getValues,
     trigger,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      firstName: _firstName,
+      lastName: _lastName,
+      address: _address,
+      email: _email,
+      city: _city,
+      zip: _zip,
+      shippingCountry: _shippingCountry,
+      shippingSubdivision: _shippingSubdivision,
+      shippingOption: _shippingOption,
+    },
+  });
 
   const handleNextStep = async (values) => {
     console.log(values);
@@ -43,8 +64,6 @@ const AddressForm2 = ({ checkoutToken, next }) => {
 
     if (isValid) next(values);
   };
-
-  console.log(errors);
 
   const fetchShippingCountries = async (checkoutTokenId) => {
     const { countries: fetchedCountries } = await shipping.getCountries(
@@ -105,6 +124,7 @@ const AddressForm2 = ({ checkoutToken, next }) => {
 
   return (
     <>
+      <div className="h5 mt-4">Shipping Address</div>
       <form
         onSubmit={handleSubmit((values) =>
           handleNextStep({

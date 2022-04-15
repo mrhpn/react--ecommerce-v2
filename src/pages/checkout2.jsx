@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AddressForm from '../components/addressForm';
-import PaymentForm from '../components/paymentForm';
+import PaymentForm2 from '../components/paymentForm2';
 import checkout from '../services/checkout';
 import AddressForm2 from '../components/addressForm2';
 import { Steps, Step, useSteps, StepsStyleConfig } from 'chakra-ui-steps';
@@ -15,7 +15,10 @@ import {
   FormLabel,
   Button,
   Select,
+  Heading,
+  Spinner,
 } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
 const steps = [{ label: 'Address' }, { label: 'Payment' }];
 
@@ -29,8 +32,7 @@ const Checkout2 = ({ cart, order, onCaptureCheckout, error }) => {
   const { nextStep, prevStep, reset, activeStep } = useSteps({
     initialStep: 0,
   });
-  // const [activeStep, setActiveStep] = useState(0);
-  const [checkoutToken, setCheckoutToken] = useState({}); // todo: change default value to null
+  const [checkoutToken, setCheckoutToken] = useState(null); // todo: change default value to null
   const [shippingData, setShippingData] = useState({});
 
   const next = (data) => {
@@ -38,24 +40,48 @@ const Checkout2 = ({ cart, order, onCaptureCheckout, error }) => {
     nextStep();
   };
 
-  // const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  // const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  const backStep = () => {};
+  const Form = () => {
+    if (activeStep === 0)
+      return (
+        <AddressForm2
+          shippingData={shippingData}
+          checkoutToken={checkoutToken}
+          next={next}
+        />
+      );
+    else if (activeStep === 1)
+      return (
+        <PaymentForm2
+          shippingData={shippingData}
+          checkoutToken={checkoutToken}
+          onCaptureCheckout={onCaptureCheckout}
+          backStep={prevStep}
+          nextStep={nextStep}
+        />
+      );
+  };
 
-  const Form = () =>
-    activeStep === 0 ? (
-      <AddressForm2 checkoutToken={checkoutToken} next={next} />
+  const Confirmation = () =>
+    order.customer ? (
+      <div>
+        <div className="h5 mt-4">
+          Thank you for your purchase, {order.customer.firstname}{' '}
+          {order.customer.lastname} !
+        </div>
+        <h5 className="my-3">Order reference: {order.customer_reference}</h5>
+        <hr />
+        <Link to="/">
+          <Button mt={3} colorScheme="messenger">
+            Back to Home
+          </Button>
+        </Link>
+      </div>
     ) : (
-      <PaymentForm
-        shippingData={shippingData}
-        checkoutToken={checkoutToken}
-        backStep={backStep}
-        onCaptureCheckout={onCaptureCheckout}
-        nextStep={nextStep}
-      />
+      <div className="d-flex justify-content-center mx-auto">
+        <Spinner />
+        <div className="ml-3">Performing your order...</div>
+      </div>
     );
-
-  const Confirmation = () => <div>Confirmation</div>;
 
   useEffect(() => {
     const generateToken = async () => {
@@ -67,27 +93,28 @@ const Checkout2 = ({ cart, order, onCaptureCheckout, error }) => {
       }
     };
 
-    // generateToken();
+    generateToken();
   }, [cart]);
 
   return (
-    <div className="container d-flex justify-content-center mt-5">
+    <div className="container mx-auto justify-content-center mt-5">
       <ChakraProvider theme={theme}>
-        <Box p={5} maxW={500}>
-          <Steps activeStep={activeStep}>
-            {steps.map(({ label }, index) => (
-              <Step label={label} key={label}>
-                <div className="mt-3">
-                  {activeStep === steps.length ? (
-                    <Confirmation />
-                  ) : (
-                    checkoutToken && <Form />
-                  )}
-                </div>
-              </Step>
-            ))}
-          </Steps>
-        </Box>
+        <Flex flexDir="column" width="100%">
+          <Box p={5} maxW={500}>
+            <Steps activeStep={activeStep}>
+              {steps.map(({ label }, index) => (
+                <Step label={label} key={label}>
+                  {checkoutToken && <Form />}
+                </Step>
+              ))}
+            </Steps>
+            {activeStep === steps.length && (
+              <Flex px={4} py={4} width="100%" flexDirection="column">
+                <Confirmation />
+              </Flex>
+            )}
+          </Box>
+        </Flex>
       </ChakraProvider>
     </div>
   );
