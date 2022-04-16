@@ -90,7 +90,9 @@ const NavBar = ({ totalItems }) => {
                   <ul className="list-group list-group-flush position-absolute shadow-lg">
                     {categories.map((category) => {
                       return (
-                        <Link to={`/products/${category.slug}`}>
+                        <Link
+                          key={category.name}
+                          to={`/products/${category.slug}`}>
                           <li
                             key={category.name}
                             className="list-group-item list-group-item-action">

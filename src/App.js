@@ -83,8 +83,8 @@ const App = () => {
 
   useEffect(() => {
     getSancks();
-    // getJuices();
-    // getFishAndSeafood();
+    getJuices();
+    getFishAndSeafood();
     fetchCart();
   }, []);
 
