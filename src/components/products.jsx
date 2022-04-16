@@ -5,9 +5,7 @@ import Product from './product';
 const Products = ({ items, slugs = [], onAddToCart }) => {
   const { category } = useParams();
 
-  let isScrollable = '';
-  if (slugs.length)
-    isScrollable = slugs.includes(category) ? '' : 'container__hr-scrollable';
+  let isScrollable = slugs.includes(category) ? '' : 'container__hr-scrollable';
 
   return (
     <div className={`container ${isScrollable}`}>
