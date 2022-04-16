@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PaymentForm from '../components/paymentForm';
-import AddressForm from '../components/addressForm';
-import checkout from '../services/checkout';
+import { Link } from 'react-router-dom';
 import { Steps, Step, useSteps, StepsStyleConfig } from 'chakra-ui-steps';
 import { FiShoppingBag, FiMapPin, FiDollarSign } from 'react-icons/fi';
 import {
@@ -11,8 +9,10 @@ import {
   Flex,
   Button,
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import PaymentForm from '../components/paymentForm';
+import AddressForm from '../components/addressForm';
 import Loading from '../components/loading';
+import checkoutServices from '../services/checkout';
 
 const steps = [
   { label: 'Address', icon: FiMapPin },
@@ -29,7 +29,7 @@ const Checkout = ({ cart, order, onCaptureCheckout }) => {
   const { nextStep, prevStep, activeStep } = useSteps({
     initialStep: 0,
   });
-  const [checkoutToken, setCheckoutToken] = useState(null); // todo: change default value to null
+  const [checkoutToken, setCheckoutToken] = useState(null);
   const [shippingData, setShippingData] = useState({});
 
   const next = (data) => {
@@ -75,13 +75,13 @@ const Checkout = ({ cart, order, onCaptureCheckout }) => {
         </Link>
       </div>
     ) : (
-      <Loading label="Performing your order..." />
+      <Loading label="Confirming your order..." />
     );
 
   useEffect(() => {
     const generateToken = async () => {
       try {
-        const token = await checkout.generateToken(cart.id);
+        const token = await checkoutServices.generateToken(cart.id);
         setCheckoutToken(token);
       } catch (error) {
         //todo: handle errors

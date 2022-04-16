@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import shipping from '../services/shipping';
-import checkout from '../services/checkout';
 import { Link } from 'react-router-dom';
-import FormField from './formInputText';
-import { Button, FormLabel, Input, Select } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
+import { Button, FormLabel, Input, Select } from '@chakra-ui/react';
+import FormField from './formField';
 import Loading from './loading';
 import {
   HiOutlineArrowNarrowRight,
   HiOutlineArrowNarrowLeft,
 } from 'react-icons/hi';
+import shipping from '../services/shipping';
+import checkoutServices from '../services/checkout';
+import { isValidEmail } from '../utils/validateEmail';
 
 const required = {
   value: true,
@@ -85,6 +86,7 @@ const AddressForm = ({ shippingData, checkoutToken, next }) => {
       checkoutTokenId
     );
     setShippingCountries(fetchedCountries);
+
     setShippingCountry(Object.keys(fetchedCountries)[0]);
   };
 
@@ -93,21 +95,24 @@ const AddressForm = ({ shippingData, checkoutToken, next }) => {
       subdivisions: fetchedSubdivisions,
     } = await shipping.getSubdivisions(countryCode);
     setShippingSubdivisions(fetchedSubdivisions);
+
     setShippingSubdivision(Object.keys(fetchedSubdivisions)[0]);
   };
 
   const fetchShippingOptions = async (checkoutTokenId, country, region) => {
-    const _options = await checkout.getShippingOptions(
+    const _options = await checkoutServices.getShippingOptions(
       checkoutTokenId,
       country,
       region
     );
     setShippingOptions(_options);
+
     setShippingOption(_options[0].id);
   };
 
   useEffect(() => {
-    fetchShippingCountries(checkoutToken.id);
+    if (shippingCountries.length === 0)
+      fetchShippingCountries(checkoutToken.id);
   }, []);
 
   useEffect(() => {
@@ -128,16 +133,6 @@ const AddressForm = ({ shippingData, checkoutToken, next }) => {
     label: name,
   }));
 
-  useEffect(() => {
-    if (
-      shippingCountries.length === 0 ||
-      shippingSubdivisions.length === 0 ||
-      shippingOptions.length === 0
-    )
-      setLoading(true);
-    else setLoading(false);
-  }, [shippingCountries, shippingSubdivisions, shippingOptions]);
-
   const subdivisions = Object.entries(
     shippingSubdivisions
   ).map(([code, name]) => ({ id: code, label: name }));
@@ -147,11 +142,15 @@ const AddressForm = ({ shippingData, checkoutToken, next }) => {
     label: `${option.description} - (${option.price.formatted_with_symbol})`,
   }));
 
-  const isValidEmail = (email) =>
-    // eslint-disable-next-line no-useless-escape
-    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-      email
-    );
+  useEffect(() => {
+    if (
+      shippingCountries.length === 0 ||
+      shippingSubdivisions.length === 0 ||
+      shippingOptions.length === 0
+    )
+      setLoading(true);
+    else setLoading(false);
+  }, [shippingCountries, shippingSubdivisions, shippingOptions]);
 
   const handleEmailValidation = (email) => isValidEmail(email);
 
@@ -206,7 +205,6 @@ const AddressForm = ({ shippingData, checkoutToken, next }) => {
           <div className="form-group col-md-6">
             <FormField
               label="Email"
-              // error={errors.email && errors.email.message}>
               error={
                 (errors.email &&
                   errors.email.type === 'required' &&

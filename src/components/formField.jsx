@@ -4,7 +4,7 @@ import { FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react';
 const FormField = ({ error, children, label }) => {
   return (
     <FormControl isInvalid={Boolean(error)}>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel requiredIndicator>{label}</FormLabel>
       {children}
       {error && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>

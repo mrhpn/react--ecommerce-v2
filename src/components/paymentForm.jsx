@@ -14,9 +14,9 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 const PaymentForm = ({
   checkoutToken,
   shippingData,
+  onCaptureCheckout,
   backStep,
   nextStep,
-  onCaptureCheckout,
 }) => {
   const [paymentLoading, setPaymentLoading] = useState(true);
   const [cardError, setCardError] = useState('');

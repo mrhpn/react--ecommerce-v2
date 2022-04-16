@@ -17,6 +17,11 @@ const getShippingOptions = async (checkoutTokenId, country, region = null) => {
   return options;
 };
 
-const checkout = { generateToken, getShippingOptions };
+const capture = async (checkoutTokenId, order) => {
+  const newOrder = await commerce.checkout.capture(checkoutTokenId, order);
+  return newOrder;
+};
 
-export default checkout;
+const checkoutServices = { generateToken, getShippingOptions, capture };
+
+export default checkoutServices;

@@ -25,6 +25,11 @@ const empty = async () => {
   return emptied;
 };
 
-const cart = { add, reteive, update, remove, empty };
+const refresh = async () => {
+  const newCart = await commerce.cart.refresh();
+  return newCart;
+};
 
-export default cart;
+const cartServices = { add, reteive, update, remove, empty, refresh };
+
+export default cartServices;

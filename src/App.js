@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import products from './services/products';
 import NavBar from './components/navbar';
-import cart from './services/cart';
-import './App.css';
-import Cart from './pages/cart';
 import Home from './pages/home';
 import Categories from './pages/categories';
-import { commerce } from './lib/commerce';
+import Cart from './pages/cart';
 import Checkout from './pages/checkout';
 import NotFound from './pages/app/notFound';
+import { commerce } from './lib/commerce';
+import products from './services/products';
+import cartServices from './services/cart';
+import './App.css';
+import checkoutServices from './services/checkout';
 
 const App = () => {
   const [snacks, setSnacks] = useState([]);
@@ -35,42 +36,43 @@ const App = () => {
   };
 
   const handleAddToCart = async (productId, quantity) => {
-    const fetchedCart = await cart.add(productId, quantity);
+    const fetchedCart = await cartServices.add(productId, quantity);
     setShoppingCart(fetchedCart.cart);
   };
 
   const handleUpdateQuantity = async (productId, quantity) => {
-    const updatedCart = await cart.update(productId, quantity);
+    const updatedCart = await cartServices.update(productId, quantity);
     setShoppingCart(updatedCart.cart);
   };
 
   const handleRemoveCartItem = async (productId) => {
-    const removed = await cart.remove(productId);
+    const removed = await cartServices.remove(productId);
     setShoppingCart(removed.cart);
   };
 
   const handleEmptyCart = async () => {
-    const emptied = await cart.empty();
+    const emptied = await cartServices.empty();
     setShoppingCart(emptied.cart);
   };
 
   const fetchCart = async () => {
-    const data = await cart.reteive();
+    const data = await cartServices.reteive();
     setShoppingCart(data);
   };
 
   const refreshCart = async () => {
-    const newCart = await commerce.cart.refresh();
+    const newCart = await cartServices.refresh();
     setShoppingCart(newCart);
   };
 
   const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
     try {
-      const incomingOrder = await commerce.checkout.capture(
+      const incomingNewOrder = await checkoutServices.capture(
         checkoutTokenId,
         newOrder
       );
-      setOrder(incomingOrder);
+      setOrder(incomingNewOrder);
+
       refreshCart();
     } catch (error) {
       setErrorMessage(error.data.error.message);

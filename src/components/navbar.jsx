@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { commerce } from '../lib/commerce';
 import { Link, NavLink } from 'react-router-dom';
-import logo from '../assets/icons/logo.svg';
-import shoppingCart from '../assets/icons/shopping-cart.svg';
 import { HiOutlineSearch } from 'react-icons/hi';
 import { FiHome, FiGrid, FiShoppingCart, FiUser } from 'react-icons/fi';
+import logo from '../assets/icons/logo.svg';
+import shoppingCart from '../assets/icons/shopping-cart.svg';
+import categoryService from '../services/categories';
 
 const NavBar = ({ totalItems }) => {
   const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(
@@ -14,8 +14,8 @@ const NavBar = ({ totalItems }) => {
   const [categories, setCategories] = useState([]);
 
   const getCategories = async () => {
-    const a = await commerce.categories.list();
-    setCategories(a.data);
+    const data = await categoryService.get();
+    setCategories(data);
   };
 
   useEffect(() => {
