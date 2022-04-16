@@ -21,7 +21,7 @@ const ProductsPage = ({ slugs, onAddToCart }) => {
     };
 
     getProducts();
-  }, []);
+  }, [category]);
 
   return (
     <>
