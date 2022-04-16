@@ -1,9 +1,16 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import Product from './product';
 
-const Products = ({ items, onAddToCart }) => {
+const Products = ({ items, slugs = [], onAddToCart }) => {
+  const { category } = useParams();
+
+  let isScrollable = '';
+  if (slugs.length)
+    isScrollable = slugs.includes(category) ? '' : 'container__hr-scrollable';
+
   return (
-    <div className="container container__hr-scrollable">
+    <div className={`container ${isScrollable}`}>
       <div className="row text-center">
         {items.map((item) => {
           return (

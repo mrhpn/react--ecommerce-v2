@@ -6,11 +6,13 @@ import Categories from './pages/categories';
 import Cart from './pages/cart';
 import Checkout from './pages/checkout';
 import NotFound from './pages/app/notFound';
-import { commerce } from './lib/commerce';
+import ProductsPage from './pages/productsPage';
 import products from './services/products';
 import cartServices from './services/cart';
-import './App.css';
 import checkoutServices from './services/checkout';
+import './App.css';
+
+const slugs = ['snacks', 'juice', 'fish-and-seafood'];
 
 const App = () => {
   const [snacks, setSnacks] = useState([]);
@@ -21,17 +23,17 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const getSancks = async () => {
-    const data = await products.getByCategory('snacks');
+    const data = await products.getByCategory(slugs[0]);
     setSnacks(data);
   };
 
   const getJuices = async () => {
-    const data = await products.getByCategory('juice');
+    const data = await products.getByCategory(slugs[1]);
     setJuices(data);
   };
 
   const getFishAndSeafood = async () => {
-    const data = await products.getByCategory('fish-and-seafood');
+    const data = await products.getByCategory(slugs[2]);
     setFishAndSeafood(data);
   };
 
@@ -81,8 +83,8 @@ const App = () => {
 
   useEffect(() => {
     getSancks();
-    getJuices();
-    getFishAndSeafood();
+    // getJuices();
+    // getFishAndSeafood();
     fetchCart();
   }, []);
 
@@ -121,8 +123,17 @@ const App = () => {
           path="/"
           exact
           element={
-            <Home products={productsToPresent} onAddToCart={handleAddToCart} />
+            <Home
+              slugs={slugs}
+              products={productsToPresent}
+              onAddToCart={handleAddToCart}
+            />
           }
+        />
+        <Route
+          path="/products/:category"
+          exact
+          element={<ProductsPage slugs={slugs} onAddToCart={handleAddToCart} />}
         />
         <Route path="*" element={<Navigate to="/not-found" />} />
         <Route path="/not-found" element={<NotFound />} />

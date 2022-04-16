@@ -3,7 +3,7 @@ import Carousel from '../components/carousel';
 import Footer from '../components/footer';
 import ProductRow from '../components/productRow';
 
-const Home = ({ products, onAddToCart }) => {
+const Home = ({ slugs, products, onAddToCart }) => {
   const { snacks, juices, fishAndSeafood } = products;
 
   return (
@@ -14,7 +14,7 @@ const Home = ({ products, onAddToCart }) => {
         {/* Snacks */}
         <ProductRow
           title="Snacks"
-          viewAllLink="/"
+          viewAllLink={`/products/${slugs[0]}`}
           products={snacks}
           onAddToCart={onAddToCart}
         />
@@ -22,7 +22,7 @@ const Home = ({ products, onAddToCart }) => {
         {/* Juice */}
         <ProductRow
           title="Juices"
-          viewAllLink="/"
+          viewAllLink={`/products/${slugs[1]}`}
           products={juices}
           onAddToCart={onAddToCart}
         />
@@ -30,7 +30,7 @@ const Home = ({ products, onAddToCart }) => {
         {/* Fish and Seafood */}
         <ProductRow
           title="Fish and Seafood"
-          viewAllLink="/"
+          viewAllLink={`/products/${slugs[2]}`}
           products={fishAndSeafood}
           onAddToCart={onAddToCart}
         />

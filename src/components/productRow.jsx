@@ -4,7 +4,7 @@ import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
 import LoadingProducts from './loadingProducts';
 import Products from './products';
 
-const ProductRow = ({ title, viewAllLink, products, onAddToCart }) => {
+const ProductRow = ({ title, viewAllLink = '/', products, onAddToCart }) => {
   return (
     <div className="mt-5 mb-5">
       <div className="d-flex justify-content-between">

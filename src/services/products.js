@@ -9,6 +9,15 @@ const getByCategory = async (category) => {
   return response.data;
 };
 
-const products = { getByCategory };
+const getDoublesByCategory = async (category) => {
+  const response = await commerce.products.list({
+    category_slug: [category],
+    limit: 12,
+  });
+
+  return response.data;
+};
+
+const products = { getByCategory, getDoublesByCategory };
 
 export default products;
