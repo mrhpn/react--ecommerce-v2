@@ -8,6 +8,7 @@ import products from '../services/products';
 const ProductsPage = ({ slugs, onAddToCart }) => {
   const { category } = useParams();
   const [fetchedProducts, setFetchedProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   if (!slugs.includes(category)) {
     const navigate = useNavigate();
@@ -15,12 +16,15 @@ const ProductsPage = ({ slugs, onAddToCart }) => {
   }
 
   useEffect(() => {
+    setFetchedProducts([]);
+    setLoading(true);
     const getProducts = async () => {
       const data = await products.getDoublesByCategory(category);
       setFetchedProducts(data);
     };
 
     getProducts();
+    setLoading(false);
   }, [category]);
 
   return (
@@ -32,7 +36,7 @@ const ProductsPage = ({ slugs, onAddToCart }) => {
               {slugToTitle(category)}
             </h4>
           </div>
-          {fetchedProducts.length === 0 ? (
+          {fetchedProducts.length === 0 || loading ? (
             <LoadingProducts />
           ) : (
             <Products
